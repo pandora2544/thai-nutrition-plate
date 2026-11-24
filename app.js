@@ -7,13 +7,13 @@
   const MAIN = ['energy', 'carb', 'protein', 'fat', 'la', 'ala', 'satfat', 'dha', 'epa_dha', 'sodium'];
   const STORE = 'tnp-state-v2';
   const CATS = [
-    { id: 'inf', label: 'ทารก', icon: '👶', bands: ['inf0', 'inf6'], sex: true },
-    { id: 'child', label: 'เด็ก 1–8 ปี', icon: '🧒', bands: ['c1', 'c4', 'c6'], sex: true },
-    { id: 'teen', label: 'วัยรุ่น 9–18 ปี', icon: '🧑', bands: ['t9', 't13', 't16'], sex: true },
-    { id: 'adult', label: 'ผู้ใหญ่ 19–60 ปี', icon: '🧑‍💼', bands: ['a19', 'a31', 'a51'], sex: true },
-    { id: 'elder', label: 'ผู้สูงอายุ 61 ปีขึ้นไป', icon: '🧓', bands: ['a61', 'a71'], sex: true },
-    { id: 'preg', label: 'หญิงตั้งครรภ์', icon: '🤰', groups: ['p1', 'p2', 'p3'] },
-    { id: 'lact', label: 'หญิงให้นมบุตร', icon: '🤱', groups: ['l0', 'l6'] }];
+    { id: 'inf', label: 'ทารก', bands: ['inf0', 'inf6'], sex: true },
+    { id: 'child', label: 'เด็ก 1–8 ปี', bands: ['c1', 'c4', 'c6'], sex: true },
+    { id: 'teen', label: 'วัยรุ่น 9–18 ปี', bands: ['t9', 't13', 't16'], sex: true },
+    { id: 'adult', label: 'ผู้ใหญ่ 19–60 ปี', bands: ['a19', 'a31', 'a51'], sex: true },
+    { id: 'elder', label: 'ผู้สูงอายุ 61 ปีขึ้นไป', bands: ['a61', 'a71'], sex: true },
+    { id: 'preg', label: 'หญิงตั้งครรภ์', groups: ['p1', 'p2', 'p3'] },
+    { id: 'lact', label: 'หญิงให้นมบุตร', groups: ['l0', 'l6'] }];
   const BANDLAB = { inf0: '0–5 เดือน', inf6: '6–11 เดือน', c1: '1–3 ปี', c4: '4–5 ปี', c6: '6–8 ปี', t9: '9–12 ปี', t13: '13–15 ปี', t16: '16–18 ปี', a19: '19–30 ปี', a31: '31–50 ปี', a51: '51–60 ปี', a61: '61–70 ปี', a71: '71 ปีขึ้นไป' };
 
   let DB, D, NUT = {}, foodsById, KEYS = [];
@@ -32,9 +32,9 @@
   /* ---------- step 1 ---------- */
   function renderStep1() {
     const c = cat(), p = prof();
-    let h = `<h2>① เลือกกลุ่มวัย</h2><div class="grid">` + CATS.map(x => `<button class="card" data-cat="${x.id}" aria-pressed="${x.id === state.cat}"><span class="ic">${x.icon}</span><b>${esc(x.label)}</b></button>`).join('') + '</div>';
+    let h = `<h2>${Icons.ICON.one}เลือกกลุ่มวัย</h2><div class="grid">` + CATS.map(x => `<button class="card" data-cat="${x.id}" aria-pressed="${x.id === state.cat}"><span class="badge">${Icons.ICON.tick}</span>${Icons.PEOPLE[x.id]}<span>${esc(x.label)}</span></button>`).join('') + '</div>';
     if (c) {
-      h += '<div class="row" style="margin-top:14px">';
+      h += '<div class="row">';
       if (c.sex) h += `<label>เพศ<select id="sex"><option value="F"${state.sex === 'F' ? ' selected' : ''}>หญิง</option><option value="M"${state.sex === 'M' ? ' selected' : ''}>ชาย</option></select></label>
         <label>ช่วงอายุ<select id="band"><option value="">— เลือก —</option>${c.bands.map(b => `<option value="${b}"${b === state.band ? ' selected' : ''}>${BANDLAB[b]}</option>`).join('')}</select></label>`;
       else h += `<label>ระยะ<select id="grp"><option value="">— เลือก —</option>${c.groups.map(id => `<option value="${id}"${id === state.groupId ? ' selected' : ''}>${esc(D.groups.find(g => g.id === id).label)}</option>`).join('')}</select></label>
@@ -46,20 +46,20 @@
     else if (p) {
       h += modeBox();
       const reveal = !practice() || state.answer.revealed || state.mode === 'table';
-      h += `<h3>ความต้องการต่อวัน · ${esc(p.label)}</h3>`;
+      h += `<div class="chip">${Icons.ICON.clip}ความต้องการต่อวัน · ${esc(p.label)}</div><h3>ความต้องการพลังงานและโปรตีน</h3>`;
       if (!reveal) {
         h += `<p>โหมดฝึก: คำนวณเองก่อน แล้วกรอกคำตอบเพื่อตรวจ</p><div class="row">
           <label>พลังงานหลังปัด (kcal)<input id="ansE" type="number" value="${esc(state.answer.e || '')}"></label>
           <label>โปรตีนขั้นต่ำ (g)<input id="ansP" type="number" step="0.1" value="${esc(state.answer.p || '')}"></label>
           <button class="btn" id="checkAns">ตรวจคำตอบ</button></div><p id="ansMsg"></p>`;
       } else {
-        h += `<table><tr><th>รายการ</th><th class="num">ค่า</th><th>ที่มา / วิธีคิด</th></tr>
-          <tr><td><b>พลังงาน</b></td><td class="num"><b>${fmt(p.energyRange[0], 0)}–${fmt(p.energyRange[1], 0)} kcal</b></td><td>${esc(p.energyHow)}</td></tr>
-          <tr><td><b>โปรตีน</b></td><td class="num"><b>≥ ${fmt(p.protein, 1)} g</b></td><td>${esc(p.proteinHow)}</td></tr></table>`;
+        h += `<div class="scroll"><table><tr><th>รายการ</th><th class="num">ค่าแนะนำ</th><th>ที่มา / วิธีคิด</th></tr>
+          <tr><td>พลังงาน</td><td class="num val">${fmt(p.energyRange[0], 0)}–${fmt(p.energyRange[1], 0)} kcal</td><td>${esc(p.energyHow)}</td></tr>
+          <tr><td>โปรตีน</td><td class="num val">≥ ${fmt(p.protein, 1)} g</td><td>${esc(p.proteinHow)}</td></tr></table></div>`;
       }
-      h += `<h3>วิตามินและแร่ธาตุต่อวัน</h3><table><tr><th>สารอาหาร</th><th class="num">เกณฑ์</th><th>ชนิด</th><th>หมายเหตุ</th></tr>` +
+      h += `<h3>วิตามินและแร่ธาตุต่อวัน</h3><div class="scroll"><table><tr><th>สารอาหาร</th><th class="num">เกณฑ์แนะนำ</th><th>ชนิด</th><th>หมายเหตุ</th></tr>` +
         Object.entries(p.targets).map(([k, t]) => `<tr><td>${esc(NUT[k] ? NUT[k].label : k)}</td><td class="num">${t.none ? '–' : t.min != null ? '≥ ' + fmt(t.min, 2) : '≤ ' + fmt(t.max, 0)} ${esc(NUT[k] ? NUT[k].unit : '')}${t.iu ? ` <small class="na">(${fmt(t.iu, 0)} IU)</small>` : ''}</td>
-          <td>${t.src === 'ACT' ? '<span class="tag w">ค่าฝึกในใบงาน</span>' : esc(t.type || '')}</td><td>${esc(t.note || '')}</td></tr>`).join('') + `</table>
+          <td>${t.src === 'ACT' ? '<span class="tag w">ค่าฝึกในใบงาน</span>' : esc(t.type || '')}</td><td>${esc(t.note || '')}</td></tr>`).join('') + `</table></div>
         <p class="note">สัดส่วนพลังงาน: คาร์โบไฮเดรต 45–65%E · ไขมัน ${p.fatE ? p.fatE.join('–') : '–'}%E${p.fatNote ? ' (' + esc(p.fatNote) + ')' : ''} · LA 2.5–9%E · ALA 0.5–0.6%E · ไขมันอิ่มตัว &lt;10%E · ${esc(D.percentENote)}</p>
         <p class="note">${esc(D.source)} · RDA = ค่าที่แนะนำ, AI = ปริมาณที่เพียงพอ · <b>${esc(D.verification)}</b></p>
         <p><button class="btn" data-go="2">ไปจัดจาน →</button></p>`;
@@ -68,11 +68,11 @@
   }
   function modeBox() {
     if (!canCalc()) return '';
-    let h = `<div class="row" style="margin-top:10px"><label>วิธีหาพลังงาน<select id="mode"><option value="table"${state.mode === 'table' ? ' selected' : ''}>ตามตาราง Thai DRI</option><option value="calc"${state.mode === 'calc' ? ' selected' : ''}>คำนวณจากน้ำหนักจริง (สูตรในใบงาน)</option></select></label>`;
+    let h = `<div class="row"><label>วิธีหาพลังงาน<select id="mode"><option value="table"${state.mode === 'table' ? ' selected' : ''}>ตามตาราง Thai DRI</option><option value="calc"${state.mode === 'calc' ? ' selected' : ''}>คำนวณจากน้ำหนักจริง (สูตรในใบงาน)</option></select></label>`;
     if (state.mode === 'calc') h += `<label>อายุ (ปี)<input id="age" type="number" value="${esc(state.age)}"></label>
       <label>${state.cat === 'preg' ? 'น้ำหนักก่อนตั้งครรภ์' : 'น้ำหนัก'} (kg)<input id="weight" type="number" step="0.1" value="${esc(state.weight)}"></label>
       <label>PAL<input id="pal" type="number" step="0.05" value="${esc(state.pal)}"></label>`;
-    if (maternal()) h += `<label style="align-self:center"><input type="checkbox" id="activity"${state.activity ? ' checked' : ''} style="width:auto;display:inline"> ใช้เกณฑ์เพิ่มของใบงาน (DHA, Na, เหล็ก 20 mg)</label>`;
+    if (maternal()) h += `<label class="check"><input type="checkbox" id="activity"${state.activity ? ' checked' : ''}> ใช้เกณฑ์เพิ่มของใบงาน (DHA, Na, เหล็ก 20 mg)</label>`;
     return h + '</div>' + (state.mode === 'calc' ? `<p class="note">${esc(D.energyCalc.source)}; ส่วนเพิ่มของหญิงตั้งครรภ์/ให้นมใช้ค่าสูงของช่วงในตารางที่ 1</p>` : '');
   }
 
@@ -92,10 +92,10 @@
     const ok = calc.filter(c => !c.error).map(c => ({ food: c.f, amount: c.amount }));
     const tot = Calc.sumItems(ok, KEYS);
     const tgt = mealTarget(mId);
-    let h = `<h2>② จัดจาน · ${esc(p.label)}</h2><div class="tabs noprint">` + D.mealShares.meals.map(m => `<button data-meal="${m.id}" class="${m.id === mId ? 'on' : ''}">${esc(m.label)} (${state.meals[m.id].length})</button>`).join('') + `</div>
+    let h = `<h2>${Icons.ICON.two}จัดจาน · ${esc(p.label)}</h2><div class="tabs noprint">` + D.mealShares.meals.map(m => `<button data-meal="${m.id}" class="${m.id === mId ? 'on' : ''}">${esc(m.label)} (${state.meals[m.id].length})</button>`).join('') + `</div>
       <div class="two"><div class="noprint"><input class="search" id="q" placeholder="ค้นอาหาร เช่น ข้าว ไข่ ปลา นม ผัก" autocomplete="off"><div class="results" id="res"></div></div><div>
       <h3>${esc(D.mealShares.meals.find(m => m.id === mId).label)} · เป้า ${tgt ? fmt(tgt, 0) + ' kcal' : '–'}</h3>
-      <table><tr><th>รายการ</th><th>ปริมาณ</th><th class="num">g/ml</th><th class="num">kcal</th><th class="num">C (g)</th><th class="num">P (g)</th><th class="num">ไขมัน (g)</th><th></th></tr>` +
+      <div class="scroll"><table><tr><th>รายการ</th><th>ปริมาณ</th><th class="num">g/ml</th><th class="num">kcal</th><th class="num">C (g)</th><th class="num">P (g)</th><th class="num">ไขมัน (g)</th><th></th></tr>` +
       calc.map((c, i) => {
         const it = items[i], f = c.f;
         const cell = k => c.error ? '' : c.s[k] ? fmt(c.s[k][0], 1) + (c.s[k][1] !== c.s[k][0] ? '–' + fmt(c.s[k][1], 1) : '') : '<span class="na">n.a.</span>';
@@ -104,7 +104,7 @@
           <td class="num">${c.error ? '' : fmt(c.amount, 1) + ' ' + esc(unitTh(f.u))}</td><td class="num">${cell('energy')}</td><td class="num">${cell('carb')}</td><td class="num">${cell('protein')}</td><td class="num">${cell('fat')}</td>
           <td><button class="x noprint" data-del="${i}" title="ลบ">×</button></td></tr>`;
       }).join('') +
-      `<tr><th>รวมมื้อนี้</th><th></th><th></th>${['energy', 'carb', 'protein', 'fat'].map(k => `<th class="num">${fmt(tot[k].lo, 1)}${tot[k].missing ? `<br><span class="na">n.a. ${tot[k].missing}</span>` : ''}</th>`).join('')}<th></th></tr></table>`;
+      `<tr><th>รวมมื้อนี้</th><th></th><th></th>${['energy', 'carb', 'protein', 'fat'].map(k => `<th class="num">${fmt(tot[k].lo, 1)}${tot[k].missing ? `<br><span class="na">n.a. ${tot[k].missing}</span>` : ''}</th>`).join('')}<th></th></tr></table></div>`;
     if (tgt && tot.energy.known) {
       const pct = tot.energy.lo / tgt * 100;
       h += `<p>พลังงานมื้อนี้ ${fmt(tot.energy.lo, 0)} / ${fmt(tgt, 0)} kcal · <b>${tgt - tot.energy.lo >= 0 ? 'เหลือ ' + fmt(tgt - tot.energy.lo, 0) : 'เกิน ' + fmt(tot.energy.lo - tgt, 0)} kcal</b></p><div class="bar"><i style="width:${Math.min(100, pct)}%"></i></div>`;
@@ -156,7 +156,7 @@
     const day = Calc.sumItems(all, KEYS), pe = Calc.percentE(day);
     const show = !practice() || state.checked;
     const rows = KEYS.filter(k => MAIN.includes(k) ? (p.targets[k] || ['energy', 'carb', 'protein', 'fat', 'la', 'ala', 'satfat'].includes(k)) : p.targets[k]);
-    let h = `<h2>③ สรุปทั้งวัน · ${esc(p.label)}</h2><table><tr><th>สารอาหาร</th><th class="num">เป้าทั้งวัน</th>` +
+    let h = `<h2>${Icons.ICON.three}สรุปทั้งวัน · ${esc(p.label)}</h2><div class="scroll"><table><tr><th>สารอาหาร</th><th class="num">เป้าทั้งวัน</th>` +
       D.mealShares.meals.map(m => `<th class="num">${esc(m.label)}</th>`).join('') + `<th class="num">รวม</th><th class="num">%E</th><th>ผลตรวจ</th></tr>` +
       rows.map(k => {
         const d = day[k], j = show ? judge(k, d, p, pe) : ['', 'กด "ตรวจจาน"'];
@@ -165,7 +165,7 @@
           D.mealShares.meals.map(m => { const c = per[m.id][k]; return `<td class="num">${c.known ? fmt(c.lo, 2) : c.missing ? '<span class="na">n.a.</span>' : '–'}</td>`; }).join('') +
           `<td class="num"><b>${d.known ? fmt(d.lo, 2) : d.missing ? '<span class="na">n.a.</span>' : '–'}</b>${d.missing ? `<br><span class="na" title="${esc(d.missingNames.join(', '))}">ขาดข้อมูล ${d.missing} รายการ</span>` : ''}</td>
           <td class="num">${x}</td><td class="${j[0]}">${esc(j[1])}</td></tr>`;
-      }).join('') + `</table>
+      }).join('') + `</table></div>
       <p class="note">%E คิดจากผลรวมกรัมทั้งวัน (C, P × 4; ไขมัน, LA, ALA, SFA × 9) ÷ พลังงานรวม ไม่เฉลี่ย % ของแต่ละมื้อ · "ยังยืนยันไม่ได้" = ยอดจากค่าที่ทราบยังไม่ถึงเกณฑ์ และมีรายการที่ไม่มีข้อมูล · * = ค่าฝึกในใบงาน</p>
       ${maternal() ? '<p class="note warn">ยาเสริมตามระบบฝากครรภ์/หลังคลอด แยกจากยอดอาหาร ให้ติดตามกับบุคลากรสุขภาพ · ไม่ใช้เกลือมากหรือเพิ่มตับเพื่อไล่ตัวเลข</p>' : ''}
       <p class="noprint"><button class="btn" id="checkPlate">ตรวจจาน</button> <button class="btn sec" id="print">ดาวน์โหลด PDF / พิมพ์</button> <button class="btn sec" id="copy">คัดลอกตาราง</button> <span id="copyMsg"></span></p>`;
@@ -232,6 +232,7 @@
       KEYS = DB.nutrients.map(n => n.key);
       for (const m of Object.keys(state.meals)) state.meals[m] = state.meals[m].filter(it => foodsById.has(it.id));
       if (!canCalc()) state.mode = 'table';
+      $('#logo').innerHTML = Icons.ICON.logo; document.querySelectorAll('[data-ic]').forEach(e => e.innerHTML = Icons.ICON[e.dataset.ic]);
       $('#loading').hidden = true;
       $('#foot').innerHTML = `เวอร์ชันทดลอง · เกณฑ์: Thai DRI 2563 หน้า 439–442 · ฐานอาหาร ${DB.foods.length} ระเบียน (Thai DRI 2563, USDA SR Legacy 2018) จาก "ค้นอาหารและสารอาหาร" รุ่น 1.1.3 · ไม่มีการส่งข้อมูลที่กรอกออกจากเครื่อง`;
       wire(); go(1);

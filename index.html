@@ -4,28 +4,34 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>จัดจานอาหารตามวัย · เวอร์ชันทดลอง</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="top">
-  <div>
-    <p class="eyebrow">THAI NUTRITION PLATE · เวอร์ชันทดลอง</p>
-    <h1>จัดจานอาหารตามวัย</h1>
-  </div>
-  <label class="switch"><input type="checkbox" id="practice" checked> โหมดฝึก (ซ่อนผลตรวจจนกดตรวจ)</label>
-</header>
-<nav class="steps" aria-label="ขั้นตอน">
-  <button data-step="1" class="on">① เลือกกลุ่มวัย</button>
-  <button data-step="2">② จัดจาน</button>
-  <button data-step="3">③ สรุปทั้งวัน</button>
-</nav>
-<div id="loading" class="note">กำลังโหลดข้อมูล…</div>
-<main>
-  <section id="step1" class="panel"></section>
-  <section id="step2" class="panel" hidden></section>
-  <section id="step3" class="panel" hidden></section>
-</main>
-<footer id="foot"></footer>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <p class="brand"><span id="logo"></span>THAI NUTRITION PLATE · เวอร์ชันทดลอง</p>
+      <h1>จัดจานอาหารตามวัย</h1>
+      <p class="sub">ระบบประเมินและจัดอาหารเพื่อโภชนาการที่เหมาะสม</p>
+    </div>
+    <label class="switch"><input type="checkbox" id="practice" checked> โหมดฝึก (ซ่อนผลตรวจจนกดตรวจ)</label>
+  </header>
+  <nav class="steps" aria-label="ขั้นตอน">
+    <button data-step="1" class="on"><span data-ic="check"></span>เลือกกลุ่มวัย</button>
+    <button data-step="2"><span data-ic="plate"></span>จัดจาน</button>
+    <button data-step="3"><span data-ic="doc"></span>สรุปทั้งวัน</button>
+  </nav>
+  <div id="loading" class="note">กำลังโหลดข้อมูล…</div>
+  <main>
+    <section id="step1" class="panel"></section>
+    <section id="step2" class="panel" hidden></section>
+    <section id="step3" class="panel" hidden></section>
+  </main>
+  <footer id="foot"></footer>
+</div>
+<script src="icons.js"></script>
 <script src="calc.js"></script>
 <script src="app.js"></script>
 </body>
