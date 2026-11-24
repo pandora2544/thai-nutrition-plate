@@ -1,0 +1,54 @@
+{
+  "note": "เวอร์ชันทดลอง: เปิดใช้เฉพาะกลุ่มที่มีเกณฑ์ตรวจแล้ว กลุ่มอื่นรอถอดตาราง Thai DRI 2563 หน้า 439–441",
+  "mealShares": {
+    "source": "การแบ่งพลังงานในใบงานชุด A 24 พ.ย. 2569 (630/735/735 จาก 2,100 kcal)",
+    "meals": [
+      {"id": "m1", "label": "เช้า + ว่างเช้า", "share": 0.30},
+      {"id": "m2", "label": "กลางวัน + ว่างบ่าย", "share": 0.35},
+      {"id": "m3", "label": "เย็น + ว่างค่ำ", "share": 0.35}
+    ]
+  },
+  "groups": [
+    {"id": "inf0", "label": "ทารก 0–5 เดือน", "icon": "👶", "status": "pending"},
+    {"id": "inf6", "label": "ทารก 6–11 เดือน", "icon": "👶", "status": "pending"},
+    {"id": "ch1", "label": "เด็ก 1–3 ปี", "icon": "🧒", "status": "pending"},
+    {"id": "ch4", "label": "เด็ก 4–8 ปี", "icon": "🧒", "status": "pending"},
+    {"id": "teen", "label": "วัยรุ่น 9–18 ปี", "icon": "🧑", "status": "pending"},
+    {"id": "adult", "label": "ผู้ใหญ่ 19–60 ปี", "icon": "🧑", "status": "pending"},
+    {"id": "elder", "label": "ผู้สูงอายุ 60 ปีขึ้นไป", "icon": "🧓", "status": "pending"},
+    {"id": "preg1", "label": "หญิงตั้งครรภ์ ไตรมาส 1", "icon": "🤰", "status": "pending"},
+    {
+      "id": "preg2", "label": "หญิงตั้งครรภ์ ไตรมาส 2", "icon": "🤰", "status": "active",
+      "weightLabel": "น้ำหนักก่อนตั้งครรภ์ (kg)", "defaults": {"age": 26, "weight": 53, "pal": 1.4},
+      "energyAdd": 300, "proteinAdd": 10,
+      "source": "เกณฑ์ตามใบงานชุด A 24 พ.ย. 2569 อ้าง Thai DRI 2563 หน้า 46, 51–52, 91–92, 124, 303, 439–441",
+      "targets": {
+        "folate_dfe": {"min": 550}, "iodine": {"min": 200}, "calcium": {"min": 800},
+        "iron": {"min": 20, "flag": "ค่าฝึกที่ผู้สอนตั้ง ไม่ใช่ RDA หญิงตั้งครรภ์ และไม่ทดแทนยาเสริมตามฝากครรภ์"},
+        "vit_a": {"min": 700}, "vit_c": {"min": 95}, "vit_b12": {"min": 2.6}, "vit_d": {"min": 15},
+        "dha": {"min": 0.2}, "epa_dha": {"min": 0.3}, "sodium": {"max": 2000}
+      }
+    },
+    {"id": "preg3", "label": "หญิงตั้งครรภ์ ไตรมาส 3", "icon": "🤰", "status": "pending"},
+    {
+      "id": "lact1", "label": "หญิงให้นมบุตร 0–5 เดือน", "icon": "🤱", "status": "active",
+      "weightLabel": "น้ำหนักปัจจุบัน (kg)", "defaults": {"age": 28, "weight": 55, "pal": 1.4},
+      "energyAdd": 500, "proteinAdd": 19,
+      "source": "เกณฑ์ตามใบงานชุด A 24 พ.ย. 2569 อ้าง Thai DRI 2563 หน้า 46, 51–52, 91–92, 124, 303, 439–441",
+      "targets": {
+        "folate_dfe": {"min": 450}, "iodine": {"min": 200}, "calcium": {"min": 800}, "iron": {"min": 13},
+        "vit_a": {"min": 1300}, "vit_c": {"min": 145}, "vit_b12": {"min": 2.8}, "vit_d": {"min": 15},
+        "dha": {"min": 0.2}, "epa_dha": {"min": 0.3}, "sodium": {"max": 2000}
+      }
+    },
+    {"id": "lact6", "label": "หญิงให้นมบุตร 6–11 เดือน", "icon": "🤱", "status": "pending"}
+  ],
+  "energyRules": {
+    "source": "สูตรในใบงานชุด A: BMR × PAL + ส่วนเพิ่ม ปัดขึ้นขั้นละ 50 kcal; โปรตีน 1.0 g/kg + ส่วนเพิ่ม",
+    "bmrFemale": [
+      {"minAge": 18, "maxAge": 30, "a": 14.818, "b": 486.6},
+      {"minAge": 30, "maxAge": 60, "a": 8.126, "b": 845.6}
+    ],
+    "percentE": {"carb": [45, 65], "fat": [20, 35], "la": [2.5, 9], "ala": [0.5, null], "satfat": [null, 10]}
+  }
+}

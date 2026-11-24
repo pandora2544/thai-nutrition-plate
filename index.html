@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>จัดจานอาหารตามวัย · เวอร์ชันทดลอง</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <p class="eyebrow">THAI NUTRITION PLATE · เวอร์ชันทดลอง</p>
+    <h1>จัดจานอาหารตามวัย</h1>
+  </div>
+  <label class="switch"><input type="checkbox" id="practice" checked> โหมดฝึก (ซ่อนผลตรวจจนกดตรวจ)</label>
+</header>
+<nav class="steps" aria-label="ขั้นตอน">
+  <button data-step="1" class="on">① เลือกกลุ่มวัย</button>
+  <button data-step="2">② จัดจาน</button>
+  <button data-step="3">③ สรุปทั้งวัน</button>
+</nav>
+<div id="loading" class="note">กำลังโหลดข้อมูล…</div>
+<main>
+  <section id="step1" class="panel"></section>
+  <section id="step2" class="panel" hidden></section>
+  <section id="step3" class="panel" hidden></section>
+</main>
+<footer id="foot"></footer>
+<script src="calc.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

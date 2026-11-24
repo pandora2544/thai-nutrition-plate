@@ -1,0 +1,42 @@
+:root{--ink:#193e37;--muted:#5e736e;--green:#207362;--soft:#e9f3ee;--line:#d5e2dc;--bg:#f7f6f0;--amber:#855412;--red:#a12424}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Tahoma,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}
+.top{max-width:1180px;margin:24px auto 8px;padding:0 20px;display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:28px}h2{margin:0 0 12px;font-size:21px}h3{margin:14px 0 8px;font-size:17px}
+.eyebrow{margin:0;font-size:12px;letter-spacing:1.4px;font-weight:700;color:var(--green)}
+.switch{font-size:14px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+.steps{max-width:1180px;margin:8px auto;padding:0 20px;display:flex;gap:8px;flex-wrap:wrap}
+.steps button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px}
+.steps button.on{background:var(--green);color:#fff;border-color:var(--green)}
+main{max-width:1180px;margin:0 auto;padding:0 20px 30px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:10px}
+.note{max-width:1140px;margin:8px auto;padding:10px 14px;background:var(--soft);border-radius:10px;font-size:14px}
+.warn{background:#f8efdf;color:var(--amber)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.card{border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px;text-align:left}
+.card .ic{font-size:28px;display:block}.card small{display:block;color:var(--muted)}
+.card[aria-pressed=true]{border:2px solid var(--green);background:#f0f8f3}
+.card:disabled{opacity:.55;cursor:default}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}.row label{font-size:14px;font-weight:600}
+.row input,.row select{display:block;margin-top:4px;padding:8px 10px;border:1px solid #b7cec2;border-radius:9px;width:140px}
+.btn{border:0;border-radius:10px;background:var(--green);color:#fff;padding:9px 16px;font-weight:600}
+.btn.sec{background:#eef5f1;color:var(--ink);border:1px solid var(--line)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.tabs button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 12px}
+.tabs button.on{background:var(--soft);border-color:var(--green);font-weight:700}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:16px}
+@media(max-width:860px){.two{grid-template-columns:1fr}}
+.search{width:100%;padding:10px 12px;border:1px solid #b7cec2;border-radius:10px;font-size:17px}
+.results{max-height:420px;overflow:auto;margin-top:8px;display:grid;gap:6px}
+.res{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:#fff;text-align:left}
+.res b{display:block}.res small{color:var(--muted)}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:6px;background:var(--soft);margin-right:4px}
+.tag.w{background:#f8efdf;color:var(--amber)}
+table{width:100%;border-collapse:collapse;font-size:14px}th{background:#f4f7f4;font-size:12px;color:var(--muted);text-align:left}
+th,td{padding:6px 5px;border-bottom:1px solid #e8eee9;vertical-align:top}td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+td input{width:80px;padding:5px;border:1px solid #b7cec2;border-radius:7px}td select{padding:5px;border:1px solid #b7cec2;border-radius:7px}
+.na{color:#8b6e42;font-size:12px}.ok{color:var(--green);font-weight:700}.bad{color:var(--red);font-weight:700}.unk{color:var(--amber);font-weight:700}
+.x{border:0;background:none;color:var(--red);font-size:18px}
+.bar{height:8px;background:#eee;border-radius:5px;overflow:hidden;min-width:80px}.bar i{display:block;height:100%;background:var(--green)}
+.err{color:var(--red);font-size:13px}
+footer{max-width:1180px;margin:0 auto;padding:0 20px 30px;color:var(--muted);font-size:12px}
+@media print{.steps,.switch,#step1,.noprint,.search,.results{display:none!important}.panel{border:0;padding:0}#step2,#step3{display:block!important}body{background:#fff}}
