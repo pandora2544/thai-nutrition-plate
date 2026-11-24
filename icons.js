@@ -10,7 +10,7 @@
     const mouth = `<path d="M${cx - 5} ${cy + 8} q5 4 10 0" fill="none" ${S}/>`;
     const cheeks = `<circle cx="${cx - 10}" cy="${cy + 6}" r="2.6" fill="#f0a98c" opacity=".55"/><circle cx="${cx + 10}" cy="${cy + 6}" r="2.6" fill="#f0a98c" opacity=".55"/>`;
     const ears = `<ellipse cx="${cx - r}" cy="${cy + 2}" rx="3" ry="4.2" fill="${skin}" ${S}/><ellipse cx="${cx + r}" cy="${cy + 2}" rx="3" ry="4.2" fill="${skin}" ${S}/>`;
-    return `<svg viewBox="0 0 96 96" width="84" height="84" aria-hidden="true">
+    return `<svg viewBox="14 12 68 84" width="100" height="112" aria-hidden="true">
       ${o.hairBack || ''}
       <path d="M${cx - 30} 96 q0 -26 ${30} -27 q30 1 30 27z" fill="${o.shirt}" ${S}/>
       ${o.collar || ''}
@@ -20,7 +20,7 @@
   }
   const H = '#3a332e', HG = '#d7d6d2';
   const PEOPLE = {
-    inf: `<svg viewBox="0 0 96 96" width="84" height="84" aria-hidden="true">
+    inf: `<svg viewBox="14 12 68 84" width="100" height="112" aria-hidden="true">
       <path d="M22 92 q-6 -38 26 -42 q32 4 26 42z" fill="#cfe4f2" ${S}/>
       <path d="M28 70 q20 14 40 0 M30 82 q18 10 36 0" fill="none" ${S} opacity=".6"/>
       <circle cx="48" cy="40" r="19" fill="${skin}" ${S}/>
