@@ -82,6 +82,48 @@
     return { bmr, raw, energy, energyRange: [energy, energy * 1.05], protein: Number(weight) + group.proteinAdd };
   }
 
-  const api = { range, checkAmount, kcalPerUnit, toBaseAmount, scaleFood, sumItems, percentE, bmrFemale, needs, MAC_KCAL };
+  /* sel: {groupId, base (for preg/lact), mode: 'table'|'calc', age, weight, pal, activity: bool}
+     Returns targets per day from Thai DRI 2563 (+ optional activity targets from the worksheet). */
+  function profile(D, sel) {
+    const g = D.groups.find(x => x.id === sel.groupId);
+    if (!g) throw Error('เลือกกลุ่มก่อน');
+    const maternal = g.kind === 'preg' || g.kind === 'lact';
+    const baseG = maternal ? D.groups.find(x => x.id === 'F-' + (sel.base || 'a19')) : g;
+    const p = { group: g, label: g.label, breastMilkOnly: !!g.breastMilkOnly, fatE: g.fatE, fatNote: g.fatNote || '', targets: {} };
+    if (p.breastMilkOnly) return p;
+    let eLo, eHi, prot, eHow, pHow;
+    if (sel.mode === 'calc') {
+      const add = maternal ? g.energyAdd[1] : 0;
+      const tmp = { energyAdd: add, proteinAdd: maternal ? g.proteinAdd : 0 };
+      const n = needs(tmp, D.energyCalc, sel.age, sel.weight, sel.pal);
+      eLo = n.energy; eHi = n.energy * 1.05; prot = n.protein;
+      eHow = `BMR ${n.bmr.toFixed(2)} × PAL ${sel.pal}${add ? ' + ' + add : ''} = ${n.raw.toFixed(2)} → ปัดขึ้นขั้น 50 = ${n.energy} (เกณฑ์ 100–105%)`;
+      pHow = `1.0 × ${sel.weight}${tmp.proteinAdd ? ' + ' + tmp.proteinAdd : ''} g`;
+      p.calc = n;
+    } else {
+      if (maternal) {
+        eLo = baseG.energy + g.energyAdd[0]; eHi = baseG.energy + g.energyAdd[1]; prot = baseG.protein + g.proteinAdd;
+        eHow = `${baseG.label} ${baseG.energy} + ${g.energyAdd[0] === g.energyAdd[1] ? g.energyAdd[0] : g.energyAdd.join('–')} kcal (ตารางที่ 1)`;
+        pHow = `${baseG.protein} + ${g.proteinAdd} g (ตารางที่ 1)`;
+      } else {
+        eLo = g.energy; eHi = g.energy * 1.05; prot = g.protein;
+        eHow = `ตารางที่ 1 (น้ำหนักอ้างอิง ${g.refWeight} kg) · เกณฑ์ 100–105%`; pHow = 'ตารางที่ 1';
+      }
+    }
+    p.energyRange = [eLo, eHi]; p.protein = prot; p.energyHow = eHow; p.proteinHow = pHow;
+    const micro = maternal ? g.byBase[sel.base || 'a19'] : g.targets;
+    for (const [k, c] of Object.entries(micro)) {
+      if (c.bm) continue;
+      if (c.none) { p.targets[k] = { none: true, note: c.note || '', src: 'DRI' }; continue; }
+      p.targets[k] = { min: c.v, type: c.type, note: c.note || '', src: 'DRI', iu: c.iu };
+    }
+    if (sel.activity && maternal && D.activity[g.kind]) {
+      for (const [k, t] of Object.entries(D.activity[g.kind]))
+        p.targets[k] = t.max != null ? { max: t.max, src: 'ACT', note: t.note || '' } : { min: t.v, src: 'ACT', note: t.note || '' };
+    }
+    return p;
+  }
+
+  const api = { profile, range, checkAmount, kcalPerUnit, toBaseAmount, scaleFood, sumItems, percentE, bmrFemale, needs, MAC_KCAL };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.Calc = api;
 })(this);

@@ -30,10 +30,24 @@ assert.strictEqual(t.iodine.known, 0); assert.strictEqual(t.iodine.missing, 2);
 const pe = C.percentE(C.sumItems([{ food: rice, amount: 100 }], ['energy', 'carb', 'protein', 'fat', 'la', 'ala', 'satfat']));
 near(pe.carb.value, 28.17 * 4 / 130 * 100, 1e-3);
 
-// worksheet case numbers (A-P, A-L)
-const preg = G.groups.find(x => x.id === 'preg2'), lact = G.groups.find(x => x.id === 'lact1');
-const a = C.needs(preg, G.energyRules, 26, 53, 1.4); assert.strictEqual(a.energy, 2100); assert.strictEqual(a.protein, 63);
-const b = C.needs(lact, G.energyRules, 28, 55, 1.4); assert.strictEqual(b.energy, 2350); assert.strictEqual(b.protein, 74);
+// worksheet case numbers (A-P, A-L) via calc mode
+const a = C.profile(G, { groupId: 'p2', base: 'a19', mode: 'calc', age: 26, weight: 53, pal: 1.4, activity: true });
+assert.strictEqual(a.energyRange[0], 2100); assert.strictEqual(a.protein, 63);
+const b = C.profile(G, { groupId: 'l0', base: 'a19', mode: 'calc', age: 28, weight: 55, pal: 1.4, activity: true });
+assert.strictEqual(b.energyRange[0], 2350); assert.strictEqual(b.protein, 74);
+// Thai DRI targets equal the worksheet values
+const want = { p2: { folate_dfe: 550, iodine: 200, calcium: 800, vit_a: 700, vit_c: 95, vit_b12: 2.6, vit_d: 15 },
+               l0: { folate_dfe: 450, iodine: 200, calcium: 800, iron: 13, vit_a: 1300, vit_c: 145, vit_b12: 2.8, vit_d: 15 } };
+for (const [gid, t] of Object.entries(want)) { const pr = C.profile(G, { groupId: gid, base: 'a19', mode: 'table' });
+  for (const [k, v] of Object.entries(t)) near(pr.targets[k].min, v, 1e-9); }
+// pregnancy iron: Thai DRI gives no food value; activity mode adds the worksheet practice value
+assert.ok(C.profile(G, { groupId: 'p2', base: 'a19', mode: 'table' }).targets.iron.none);
+assert.strictEqual(a.targets.iron.min, 20);
+// table mode
+const f = C.profile(G, { groupId: 'F-a19', mode: 'table' }); assert.strictEqual(f.energyRange[0], 1780); assert.strictEqual(f.protein, 53);
+const p2t = C.profile(G, { groupId: 'p2', base: 'a19', mode: 'table' }); assert.deepStrictEqual(p2t.energyRange, [2030, 2080]); assert.strictEqual(p2t.protein, 63);
+assert.ok(C.profile(G, { groupId: 'M-inf0', mode: 'table' }).breastMilkOnly);
+assert.strictEqual(G.groups.length, 31);
 near(G.mealShares.meals.reduce((s, m) => s + m.share, 0), 1);
 
 // every food: positive basis, valid ranges

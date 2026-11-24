@@ -1,54 +1,4782 @@
 {
-  "note": "เวอร์ชันทดลอง: เปิดใช้เฉพาะกลุ่มที่มีเกณฑ์ตรวจแล้ว กลุ่มอื่นรอถอดตาราง Thai DRI 2563 หน้า 439–441",
-  "mealShares": {
-    "source": "การแบ่งพลังงานในใบงานชุด A 24 พ.ย. 2569 (630/735/735 จาก 2,100 kcal)",
-    "meals": [
-      {"id": "m1", "label": "เช้า + ว่างเช้า", "share": 0.30},
-      {"id": "m2", "label": "กลางวัน + ว่างบ่าย", "share": 0.35},
-      {"id": "m3", "label": "เย็น + ว่างค่ำ", "share": 0.35}
-    ]
-  },
-  "groups": [
-    {"id": "inf0", "label": "ทารก 0–5 เดือน", "icon": "👶", "status": "pending"},
-    {"id": "inf6", "label": "ทารก 6–11 เดือน", "icon": "👶", "status": "pending"},
-    {"id": "ch1", "label": "เด็ก 1–3 ปี", "icon": "🧒", "status": "pending"},
-    {"id": "ch4", "label": "เด็ก 4–8 ปี", "icon": "🧒", "status": "pending"},
-    {"id": "teen", "label": "วัยรุ่น 9–18 ปี", "icon": "🧑", "status": "pending"},
-    {"id": "adult", "label": "ผู้ใหญ่ 19–60 ปี", "icon": "🧑", "status": "pending"},
-    {"id": "elder", "label": "ผู้สูงอายุ 60 ปีขึ้นไป", "icon": "🧓", "status": "pending"},
-    {"id": "preg1", "label": "หญิงตั้งครรภ์ ไตรมาส 1", "icon": "🤰", "status": "pending"},
-    {
-      "id": "preg2", "label": "หญิงตั้งครรภ์ ไตรมาส 2", "icon": "🤰", "status": "active",
-      "weightLabel": "น้ำหนักก่อนตั้งครรภ์ (kg)", "defaults": {"age": 26, "weight": 53, "pal": 1.4},
-      "energyAdd": 300, "proteinAdd": 10,
-      "source": "เกณฑ์ตามใบงานชุด A 24 พ.ย. 2569 อ้าง Thai DRI 2563 หน้า 46, 51–52, 91–92, 124, 303, 439–441",
-      "targets": {
-        "folate_dfe": {"min": 550}, "iodine": {"min": 200}, "calcium": {"min": 800},
-        "iron": {"min": 20, "flag": "ค่าฝึกที่ผู้สอนตั้ง ไม่ใช่ RDA หญิงตั้งครรภ์ และไม่ทดแทนยาเสริมตามฝากครรภ์"},
-        "vit_a": {"min": 700}, "vit_c": {"min": 95}, "vit_b12": {"min": 2.6}, "vit_d": {"min": 15},
-        "dha": {"min": 0.2}, "epa_dha": {"min": 0.3}, "sodium": {"max": 2000}
-      }
-    },
-    {"id": "preg3", "label": "หญิงตั้งครรภ์ ไตรมาส 3", "icon": "🤰", "status": "pending"},
-    {
-      "id": "lact1", "label": "หญิงให้นมบุตร 0–5 เดือน", "icon": "🤱", "status": "active",
-      "weightLabel": "น้ำหนักปัจจุบัน (kg)", "defaults": {"age": 28, "weight": 55, "pal": 1.4},
-      "energyAdd": 500, "proteinAdd": 19,
-      "source": "เกณฑ์ตามใบงานชุด A 24 พ.ย. 2569 อ้าง Thai DRI 2563 หน้า 46, 51–52, 91–92, 124, 303, 439–441",
-      "targets": {
-        "folate_dfe": {"min": 450}, "iodine": {"min": 200}, "calcium": {"min": 800}, "iron": {"min": 13},
-        "vit_a": {"min": 1300}, "vit_c": {"min": 145}, "vit_b12": {"min": 2.8}, "vit_d": {"min": 15},
-        "dha": {"min": 0.2}, "epa_dha": {"min": 0.3}, "sodium": {"max": 2000}
-      }
-    },
-    {"id": "lact6", "label": "หญิงให้นมบุตร 6–11 เดือน", "icon": "🤱", "status": "pending"}
+ "source": "Thai DRI 2563 ตารางที่ 1–3 หน้า 439–441 และหน้า 442 (เลขหน้าพิมพ์) · ถอดจากภาพตาราง",
+ "verification": "ถอดรอบที่ 1 โดยผู้ช่วย AI 24 พ.ย. 2569 · เทียบค่าหญิงตั้งครรภ์ไตรมาส 2 / ให้นม 0–5 เดือน กับใบงานชุด A แล้วตรงกัน · รอผู้สอนตรวจรอบที่ 2",
+ "percentE": {
+  "carb": [
+   45,
+   65
   ],
-  "energyRules": {
-    "source": "สูตรในใบงานชุด A: BMR × PAL + ส่วนเพิ่ม ปัดขึ้นขั้นละ 50 kcal; โปรตีน 1.0 g/kg + ส่วนเพิ่ม",
-    "bmrFemale": [
-      {"minAge": 18, "maxAge": 30, "a": 14.818, "b": 486.6},
-      {"minAge": 30, "maxAge": 60, "a": 8.126, "b": 845.6}
-    ],
-    "percentE": {"carb": [45, 65], "fat": [20, 35], "la": [2.5, 9], "ala": [0.5, null], "satfat": [null, 10]}
+  "la": [
+   2.5,
+   9
+  ],
+  "ala": [
+   0.5,
+   0.6
+  ],
+  "satfat": [
+   null,
+   10
+  ]
+ },
+ "percentENote": "ทารก 0–5 เดือน ใช้น้ำนมแม่; PUFA รวม 6–11%E; ไขมันทรานส์ <1%E; น้ำตาลที่เติม ≤5%E (หน้า 442)",
+ "mealShares": {
+  "source": "การแบ่งพลังงานในใบงานชุด A (30/35/35%)",
+  "meals": [
+   {
+    "id": "m1",
+    "label": "เช้า + ว่างเช้า",
+    "share": 0.3
+   },
+   {
+    "id": "m2",
+    "label": "กลางวัน + ว่างบ่าย",
+    "share": 0.35
+   },
+   {
+    "id": "m3",
+    "label": "เย็น + ว่างค่ำ",
+    "share": 0.35
+   }
+  ]
+ },
+ "activity": {
+  "source": "ใบงานชุด A 24 พ.ย. 2569 (ผู้สอนกำหนดเพื่อฝึก ไม่ใช่ค่าจากตาราง Thai DRI หน้า 439–441)",
+  "preg": {
+   "dha": {
+    "v": 0.2
+   },
+   "epa_dha": {
+    "v": 0.3
+   },
+   "sodium": {
+    "max": 2000
+   },
+   "iron": {
+    "v": 20,
+    "note": "ค่าฝึก 20 mg จากอาหาร อิงหญิงวัยผู้ใหญ่ ไม่ใช่ RDA หญิงตั้งครรภ์ และไม่ทดแทนยาเสริมตามฝากครรภ์"
+   }
+  },
+  "lact": {
+   "dha": {
+    "v": 0.2
+   },
+   "epa_dha": {
+    "v": 0.3
+   },
+   "sodium": {
+    "max": 2000
+   }
   }
+ },
+ "energyCalc": {
+  "source": "สูตรในใบงานชุด A (BMR × PAL + ส่วนเพิ่ม ปัดขึ้นขั้นละ 50 kcal; โปรตีน 1.0 g/kg + ส่วนเพิ่ม)",
+  "bmrFemale": [
+   {
+    "minAge": 18,
+    "maxAge": 30,
+    "a": 14.818,
+    "b": 486.6
+   },
+   {
+    "minAge": 30,
+    "maxAge": 60,
+    "a": 8.126,
+    "b": 845.6
+   }
+  ]
+ },
+ "groups": [
+  {
+   "id": "M-inf0",
+   "kind": "inf",
+   "sex": "M",
+   "label": "ทารก 0–5 เดือน (ชาย)",
+   "refWeight": 5.7,
+   "refHeight": 59.0,
+   "energy": 490.0,
+   "protein": null,
+   "breastMilkOnly": true,
+   "targets": {
+    "vit_a": {
+     "bm": true
+    },
+    "vit_d": {
+     "v": 10.0,
+     "type": "AI",
+     "iu": 400.0
+    },
+    "vit_e": {
+     "bm": true
+    },
+    "vit_k": {
+     "bm": true
+    },
+    "vit_b1": {
+     "bm": true
+    },
+    "vit_b2": {
+     "bm": true
+    },
+    "niacin_ne": {
+     "bm": true
+    },
+    "pantothenic": {
+     "bm": true
+    },
+    "vit_b6": {
+     "bm": true
+    },
+    "folate_dfe": {
+     "bm": true
+    },
+    "vit_b12": {
+     "bm": true
+    },
+    "biotin": {
+     "bm": true
+    },
+    "choline": {
+     "bm": true
+    },
+    "vit_c": {
+     "bm": true
+    },
+    "calcium": {
+     "bm": true
+    },
+    "phosphorus": {
+     "bm": true
+    },
+    "magnesium": {
+     "bm": true
+    },
+    "iron": {
+     "bm": true
+    },
+    "iodine": {
+     "bm": true
+    },
+    "zinc": {
+     "bm": true
+    },
+    "selenium": {
+     "bm": true
+    },
+    "copper": {
+     "bm": true
+    },
+    "manganese": {
+     "bm": true
+    }
+   },
+   "fatE": null
+  },
+  {
+   "id": "M-inf6",
+   "kind": "inf",
+   "sex": "M",
+   "label": "ทารก 6–11 เดือน (ชาย)",
+   "refWeight": 8.7,
+   "refHeight": 71.2,
+   "energy": 680.0,
+   "protein": 14.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 250.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 10.0,
+     "type": "AI",
+     "iu": 400.0
+    },
+    "vit_e": {
+     "v": 5.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 2.5,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 0.3,
+     "type": "AI"
+    },
+    "vit_b2": {
+     "v": 0.4,
+     "type": "AI"
+    },
+    "niacin_ne": {
+     "v": 4.0,
+     "type": "AI"
+    },
+    "pantothenic": {
+     "v": 1.8,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 0.3,
+     "type": "AI"
+    },
+    "folate_dfe": {
+     "v": 85.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 0.5,
+     "type": "AI"
+    },
+    "biotin": {
+     "v": 6.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 150.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 50.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 260.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 275.0,
+     "type": "AI"
+    },
+    "magnesium": {
+     "v": 60.0,
+     "type": "AI"
+    },
+    "iron": {
+     "v": 9.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 70.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 2.7,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 20.0,
+     "type": "AI"
+    },
+    "copper": {
+     "v": 0.4,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 0.4,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    35,
+    40
+   ]
+  },
+  {
+   "id": "M-c1",
+   "kind": "child",
+   "sex": "M",
+   "label": "เด็ก 1–3 ปี (ชาย)",
+   "refWeight": 13.1,
+   "refHeight": 90.8,
+   "energy": 1050.0,
+   "protein": 16.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 6.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 0.5,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 0.5,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 6.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 2.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 0.5,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 120.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 0.9,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 8.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 200.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 25.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 500.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 460.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 60.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 5.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 90.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 4.4,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 20.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 0.7,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 0.6,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    35,
+    40
+   ],
+   "fatNote": "Thai DRI: 1–2 ปี 35–40%E, 2–8 ปี 25–35%E"
+  },
+  {
+   "id": "M-c4",
+   "kind": "child",
+   "sex": "M",
+   "label": "เด็ก 4–5 ปี (ชาย)",
+   "refWeight": 18.3,
+   "refHeight": 109.5,
+   "energy": 1290.0,
+   "protein": 19.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 350.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 9.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 55.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 8.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 3.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 140.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 12.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 250.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 30.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 800.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 500.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 80.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 6.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 90.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 5.3,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 30.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.0,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 0.8,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    25,
+    35
+   ]
+  },
+  {
+   "id": "M-c6",
+   "kind": "child",
+   "sex": "M",
+   "label": "เด็ก 6–8 ปี (ชาย)",
+   "refWeight": 23.0,
+   "refHeight": 122.3,
+   "energy": 1440.0,
+   "protein": 24.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 350.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 9.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 55.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 8.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 3.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 180.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 12.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 250.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 40.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 800.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 500.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 120.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 6.6,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 90.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 6.3,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 30.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.0,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 1.1,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    25,
+    35
+   ]
+  },
+  {
+   "id": "M-t9",
+   "kind": "teen",
+   "sex": "M",
+   "label": "9–12 ปี (ชาย)",
+   "refWeight": 35.6,
+   "refHeight": 142.2,
+   "energy": 1800.0,
+   "protein": 39.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 550.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 13.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 60.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 0.9,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 0.9,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 12.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 4.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.0,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 240.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 1.8,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 20.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 375.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 60.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 1000.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 170.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 11.5,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 120.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 9.5,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 40.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.0,
+     "type": "AI",
+     "note": "9–10 ปี = 1.0, 11–12 ปี = 1.3 (ใช้ค่าต่ำเป็นเกณฑ์)"
+    },
+    "manganese": {
+     "v": 1.6,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    25,
+    35
+   ]
+  },
+  {
+   "id": "M-t13",
+   "kind": "teen",
+   "sex": "M",
+   "label": "13–15 ปี (ชาย)",
+   "refWeight": 51.5,
+   "refHeight": 164.3,
+   "energy": 2200.0,
+   "protein": 55.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 750.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 13.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 75.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 16.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 25.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 550.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 85.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 1000.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 240.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 15.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 130.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 12.5,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.3,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.2,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    25,
+    35
+   ]
+  },
+  {
+   "id": "M-t16",
+   "kind": "teen",
+   "sex": "M",
+   "label": "16–18 ปี (ชาย)",
+   "refWeight": 58.3,
+   "refHeight": 171.2,
+   "energy": 2370.0,
+   "protein": 61.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 750.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 13.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 75.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 16.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 25.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 550.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 100.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 1000.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 290.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 11.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 130.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 12.9,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.3,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    25,
+    35
+   ]
+  },
+  {
+   "id": "M-a19",
+   "kind": "adult",
+   "sex": "M",
+   "label": "19–30 ปี (ชาย)",
+   "refWeight": 61.3,
+   "refHeight": 170.8,
+   "energy": 2260.0,
+   "protein": 61.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 13.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 120.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 16.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 550.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 100.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 800.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 310.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 11.5,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 150.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 11.6,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.6,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    20,
+    35
+   ]
+  },
+  {
+   "id": "M-a31",
+   "kind": "adult",
+   "sex": "M",
+   "label": "31–50 ปี (ชาย)",
+   "refWeight": 60.1,
+   "refHeight": 169.2,
+   "energy": 2190.0,
+   "protein": 60.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 13.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 120.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 16.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 550.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 100.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 800.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 320.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 11.5,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 150.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 10.9,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.6,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    20,
+    35
+   ]
+  },
+  {
+   "id": "M-a51",
+   "kind": "adult",
+   "sex": "M",
+   "label": "51–60 ปี (ชาย)",
+   "refWeight": 59.5,
+   "refHeight": 167.8,
+   "energy": 2180.0,
+   "protein": 60.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 13.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 120.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 16.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.7,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 550.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 100.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 11.5,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 150.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 10.9,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.6,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    20,
+    35
+   ]
+  },
+  {
+   "id": "M-a61",
+   "kind": "elder",
+   "sex": "M",
+   "label": "61–70 ปี (ชาย)",
+   "refWeight": 58.7,
+   "refHeight": 165.1,
+   "energy": 1790.0,
+   "protein": 59.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 13.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 120.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 16.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.7,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 550.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 100.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 11.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 150.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 10.9,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.6,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    20,
+    35
+   ]
+  },
+  {
+   "id": "M-a71",
+   "kind": "elder",
+   "sex": "M",
+   "label": "71 ปีขึ้นไป (ชาย)",
+   "refWeight": 56.2,
+   "refHeight": 163.6,
+   "energy": 1740.0,
+   "protein": 56.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 20.0,
+     "type": "RDA",
+     "iu": 800.0
+    },
+    "vit_e": {
+     "v": 13.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 120.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 16.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.7,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 550.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 100.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 280.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 11.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 150.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 10.3,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.6,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    20,
+    35
+   ]
+  },
+  {
+   "id": "F-inf0",
+   "kind": "inf",
+   "sex": "F",
+   "label": "ทารก 0–5 เดือน (หญิง)",
+   "refWeight": 5.3,
+   "refHeight": 57.6,
+   "energy": 460.0,
+   "protein": null,
+   "breastMilkOnly": true,
+   "targets": {
+    "vit_a": {
+     "bm": true
+    },
+    "vit_d": {
+     "v": 10.0,
+     "type": "AI",
+     "iu": 400.0
+    },
+    "vit_e": {
+     "bm": true
+    },
+    "vit_k": {
+     "bm": true
+    },
+    "vit_b1": {
+     "bm": true
+    },
+    "vit_b2": {
+     "bm": true
+    },
+    "niacin_ne": {
+     "bm": true
+    },
+    "pantothenic": {
+     "bm": true
+    },
+    "vit_b6": {
+     "bm": true
+    },
+    "folate_dfe": {
+     "bm": true
+    },
+    "vit_b12": {
+     "bm": true
+    },
+    "biotin": {
+     "bm": true
+    },
+    "choline": {
+     "bm": true
+    },
+    "vit_c": {
+     "bm": true
+    },
+    "calcium": {
+     "bm": true
+    },
+    "phosphorus": {
+     "bm": true
+    },
+    "magnesium": {
+     "bm": true
+    },
+    "iron": {
+     "bm": true
+    },
+    "iodine": {
+     "bm": true
+    },
+    "zinc": {
+     "bm": true
+    },
+    "selenium": {
+     "bm": true
+    },
+    "copper": {
+     "bm": true
+    },
+    "manganese": {
+     "bm": true
+    }
+   },
+   "fatE": null
+  },
+  {
+   "id": "F-inf6",
+   "kind": "inf",
+   "sex": "F",
+   "label": "ทารก 6–11 เดือน (หญิง)",
+   "refWeight": 8.0,
+   "refHeight": 69.4,
+   "energy": 610.0,
+   "protein": 12.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 250.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 10.0,
+     "type": "AI",
+     "iu": 400.0
+    },
+    "vit_e": {
+     "v": 5.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 2.5,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 0.3,
+     "type": "AI"
+    },
+    "vit_b2": {
+     "v": 0.4,
+     "type": "AI"
+    },
+    "niacin_ne": {
+     "v": 4.0,
+     "type": "AI"
+    },
+    "pantothenic": {
+     "v": 1.8,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 0.3,
+     "type": "AI"
+    },
+    "folate_dfe": {
+     "v": 85.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 0.5,
+     "type": "AI"
+    },
+    "biotin": {
+     "v": 6.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 150.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 50.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 260.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 275.0,
+     "type": "AI"
+    },
+    "magnesium": {
+     "v": 60.0,
+     "type": "AI"
+    },
+    "iron": {
+     "v": 9.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 70.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 2.7,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 20.0,
+     "type": "AI"
+    },
+    "copper": {
+     "v": 0.4,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 0.4,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    35,
+    40
+   ]
+  },
+  {
+   "id": "F-c1",
+   "kind": "child",
+   "sex": "F",
+   "label": "เด็ก 1–3 ปี (หญิง)",
+   "refWeight": 12.5,
+   "refHeight": 89.6,
+   "energy": 980.0,
+   "protein": 15.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 6.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 0.5,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 0.5,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 6.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 2.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 0.5,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 120.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 0.9,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 8.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 200.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 25.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 500.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 460.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 60.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 5.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 90.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 4.4,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 20.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 0.7,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 0.6,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    35,
+    40
+   ],
+   "fatNote": "Thai DRI: 1–2 ปี 35–40%E, 2–8 ปี 25–35%E"
+  },
+  {
+   "id": "F-c4",
+   "kind": "child",
+   "sex": "F",
+   "label": "เด็ก 4–5 ปี (หญิง)",
+   "refWeight": 18.1,
+   "refHeight": 108.9,
+   "energy": 1200.0,
+   "protein": 19.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 350.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 9.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 55.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 8.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 3.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 140.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 12.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 250.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 30.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 800.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 500.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 80.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 6.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 90.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 5.3,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 30.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.0,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 0.8,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    25,
+    35
+   ]
+  },
+  {
+   "id": "F-c6",
+   "kind": "child",
+   "sex": "F",
+   "label": "เด็ก 6–8 ปี (หญิง)",
+   "refWeight": 22.5,
+   "refHeight": 121.0,
+   "energy": 1320.0,
+   "protein": 24.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 350.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 9.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 55.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 8.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 3.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 0.6,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 180.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 12.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 250.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 40.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 800.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 500.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 120.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 6.6,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 90.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 6.3,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 30.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.0,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 1.1,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    25,
+    35
+   ]
+  },
+  {
+   "id": "F-t9",
+   "kind": "teen",
+   "sex": "F",
+   "label": "9–12 ปี (หญิง)",
+   "refWeight": 36.5,
+   "refHeight": 143.9,
+   "energy": 1650.0,
+   "protein": 40.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 550.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 11.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 60.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 0.9,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 0.9,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 12.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 4.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.0,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 240.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 1.8,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 20.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 375.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 60.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 1000.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 170.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 12.5,
+     "type": "RDA",
+     "note": "12.5 ถ้ายังไม่มีประจำเดือน; 15.6 ถ้ามีประจำเดือนแล้ว"
+    },
+    "iodine": {
+     "v": 120.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 9.0,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 40.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.0,
+     "type": "AI",
+     "note": "9–10 ปี = 1.0, 11–12 ปี = 1.1 (ใช้ค่าต่ำเป็นเกณฑ์)"
+    },
+    "manganese": {
+     "v": 1.6,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    25,
+    35
+   ]
+  },
+  {
+   "id": "F-t13",
+   "kind": "teen",
+   "sex": "F",
+   "label": "13–15 ปี (หญิง)",
+   "refWeight": 47.7,
+   "refHeight": 157.1,
+   "energy": 1860.0,
+   "protein": 51.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 11.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 75.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.0,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.0,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 14.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 25.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 400.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 80.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 1000.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 220.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 16.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 130.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 9.8,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.1,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.2,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    25,
+    35
+   ]
+  },
+  {
+   "id": "F-t16",
+   "kind": "teen",
+   "sex": "F",
+   "label": "16–18 ปี (หญิง)",
+   "refWeight": 48.9,
+   "refHeight": 158.8,
+   "energy": 1890.0,
+   "protein": 51.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 600.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 11.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 75.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.0,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.0,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 14.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.2,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 25.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 400.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 80.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 1000.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 250.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 16.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 130.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 9.8,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.1,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    25,
+    35
+   ]
+  },
+  {
+   "id": "F-a19",
+   "kind": "adult",
+   "sex": "F",
+   "label": "19–30 ปี (หญิง)",
+   "refWeight": 53.0,
+   "refHeight": 158.9,
+   "energy": 1780.0,
+   "protein": 53.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 600.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 11.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 90.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.1,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.1,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 14.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 425.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 85.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 800.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 250.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 20.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 150.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 9.7,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.3,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    20,
+    35
+   ]
+  },
+  {
+   "id": "F-a31",
+   "kind": "adult",
+   "sex": "F",
+   "label": "31–50 ปี (หญิง)",
+   "refWeight": 52.2,
+   "refHeight": 157.6,
+   "energy": 1780.0,
+   "protein": 52.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 600.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 11.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 90.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.1,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.1,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 14.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.3,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 425.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 85.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 800.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 260.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 20.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 150.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 9.2,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.3,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    20,
+    35
+   ]
+  },
+  {
+   "id": "F-a51",
+   "kind": "adult",
+   "sex": "F",
+   "label": "51–60 ปี (หญิง)",
+   "refWeight": 51.9,
+   "refHeight": 156.5,
+   "energy": 1770.0,
+   "protein": 52.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 600.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 11.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 90.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.1,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.1,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 14.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.5,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 425.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 85.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 260.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 10.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 150.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 9.2,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.3,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    20,
+    35
+   ]
+  },
+  {
+   "id": "F-a61",
+   "kind": "elder",
+   "sex": "F",
+   "label": "61–70 ปี (หญิง)",
+   "refWeight": 49.9,
+   "refHeight": 153.5,
+   "energy": 1560.0,
+   "protein": 50.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 600.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 15.0,
+     "type": "RDA",
+     "iu": 600.0
+    },
+    "vit_e": {
+     "v": 11.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 90.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.1,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.1,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 14.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.5,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 425.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 85.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 260.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 10.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 150.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 8.6,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.3,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    20,
+    35
+   ]
+  },
+  {
+   "id": "F-a71",
+   "kind": "elder",
+   "sex": "F",
+   "label": "71 ปีขึ้นไป (หญิง)",
+   "refWeight": 48.5,
+   "refHeight": 152.0,
+   "energy": 1540.0,
+   "protein": 49.0,
+   "breastMilkOnly": false,
+   "targets": {
+    "vit_a": {
+     "v": 600.0,
+     "type": "RDA"
+    },
+    "vit_d": {
+     "v": 20.0,
+     "type": "RDA",
+     "iu": 800.0
+    },
+    "vit_e": {
+     "v": 11.0,
+     "type": "RDA"
+    },
+    "vit_k": {
+     "v": 90.0,
+     "type": "AI"
+    },
+    "vit_b1": {
+     "v": 1.1,
+     "type": "RDA"
+    },
+    "vit_b2": {
+     "v": 1.1,
+     "type": "RDA"
+    },
+    "niacin_ne": {
+     "v": 14.0,
+     "type": "RDA"
+    },
+    "pantothenic": {
+     "v": 5.0,
+     "type": "AI"
+    },
+    "vit_b6": {
+     "v": 1.5,
+     "type": "RDA"
+    },
+    "folate_dfe": {
+     "v": 300.0,
+     "type": "RDA"
+    },
+    "vit_b12": {
+     "v": 2.4,
+     "type": "RDA"
+    },
+    "biotin": {
+     "v": 30.0,
+     "type": "AI"
+    },
+    "choline": {
+     "v": 425.0,
+     "type": "AI"
+    },
+    "vit_c": {
+     "v": 85.0,
+     "type": "RDA"
+    },
+    "calcium": {
+     "v": 1000.0,
+     "type": "AI"
+    },
+    "phosphorus": {
+     "v": 700.0,
+     "type": "RDA"
+    },
+    "magnesium": {
+     "v": 240.0,
+     "type": "RDA"
+    },
+    "iron": {
+     "v": 10.0,
+     "type": "RDA"
+    },
+    "iodine": {
+     "v": 150.0,
+     "type": "RDA"
+    },
+    "zinc": {
+     "v": 8.6,
+     "type": "RDA"
+    },
+    "selenium": {
+     "v": 55.0,
+     "type": "RDA"
+    },
+    "copper": {
+     "v": 1.3,
+     "type": "AI"
+    },
+    "manganese": {
+     "v": 2.5,
+     "type": "AI"
+    }
+   },
+   "fatE": [
+    20,
+    35
+   ]
+  },
+  {
+   "id": "p1",
+   "kind": "preg",
+   "sex": "F",
+   "label": "หญิงตั้งครรภ์ ไตรมาส 1",
+   "energyAdd": [
+    50.0,
+    100.0
+   ],
+   "proteinAdd": 1,
+   "notesKey": "p",
+   "baseBands": [
+    "t16",
+    "a19",
+    "a31"
+   ],
+   "fatE": [
+    20,
+    35
+   ],
+   "byBase": {
+    "t16": {
+     "vit_a": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 100.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 75.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.3,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.3,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "niacin_ne": {
+      "v": 18.0,
+      "type": "RDA",
+      "add": 4.0
+     },
+     "pantothenic": {
+      "v": 6.0,
+      "type": "AI",
+      "add": 1.0
+     },
+     "vit_b6": {
+      "v": 1.8,
+      "type": "RDA",
+      "add": 0.6
+     },
+     "folate_dfe": {
+      "v": 550.0,
+      "type": "RDA",
+      "add": 250.0
+     },
+     "vit_b12": {
+      "v": 2.6,
+      "type": "RDA",
+      "add": 0.2
+     },
+     "biotin": {
+      "v": 25.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "choline": {
+      "v": 425.0,
+      "type": "AI",
+      "add": 25.0
+     },
+     "vit_c": {
+      "v": 90.0,
+      "type": "RDA",
+      "add": 10.0
+     },
+     "calcium": {
+      "v": 1000.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 1000.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 280.0,
+      "type": "RDA",
+      "add": 30.0
+     },
+     "iron": {
+      "none": true,
+      "note": "Thai DRI ไม่กำหนดเหล็กจากอาหาร; หญิงตั้งครรภ์ได้รับยาเม็ดธาตุเหล็กเสริมวันละ 60 mg (แยกจากยอดอาหาร)"
+     },
+     "iodine": {
+      "v": 180.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 11.4,
+      "type": "RDA",
+      "add": 1.6
+     },
+     "selenium": {
+      "v": 60.0,
+      "type": "RDA",
+      "add": 5.0
+     },
+     "copper": {
+      "v": 1.3,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    },
+    "a19": {
+     "vit_a": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 100.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 90.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "niacin_ne": {
+      "v": 18.0,
+      "type": "RDA",
+      "add": 4.0
+     },
+     "pantothenic": {
+      "v": 6.0,
+      "type": "AI",
+      "add": 1.0
+     },
+     "vit_b6": {
+      "v": 1.9,
+      "type": "RDA",
+      "add": 0.6
+     },
+     "folate_dfe": {
+      "v": 550.0,
+      "type": "RDA",
+      "add": 250.0
+     },
+     "vit_b12": {
+      "v": 2.6,
+      "type": "RDA",
+      "add": 0.2
+     },
+     "biotin": {
+      "v": 30.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "choline": {
+      "v": 450.0,
+      "type": "AI",
+      "add": 25.0
+     },
+     "vit_c": {
+      "v": 95.0,
+      "type": "RDA",
+      "add": 10.0
+     },
+     "calcium": {
+      "v": 800.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 280.0,
+      "type": "RDA",
+      "add": 30.0
+     },
+     "iron": {
+      "none": true,
+      "note": "Thai DRI ไม่กำหนดเหล็กจากอาหาร; หญิงตั้งครรภ์ได้รับยาเม็ดธาตุเหล็กเสริมวันละ 60 mg (แยกจากยอดอาหาร)"
+     },
+     "iodine": {
+      "v": 200.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 11.3,
+      "type": "RDA",
+      "add": 1.6
+     },
+     "selenium": {
+      "v": 60.0,
+      "type": "RDA",
+      "add": 5.0
+     },
+     "copper": {
+      "v": 1.5,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    },
+    "a31": {
+     "vit_a": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 100.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 90.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "niacin_ne": {
+      "v": 18.0,
+      "type": "RDA",
+      "add": 4.0
+     },
+     "pantothenic": {
+      "v": 6.0,
+      "type": "AI",
+      "add": 1.0
+     },
+     "vit_b6": {
+      "v": 1.9,
+      "type": "RDA",
+      "add": 0.6
+     },
+     "folate_dfe": {
+      "v": 550.0,
+      "type": "RDA",
+      "add": 250.0
+     },
+     "vit_b12": {
+      "v": 2.6,
+      "type": "RDA",
+      "add": 0.2
+     },
+     "biotin": {
+      "v": 30.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "choline": {
+      "v": 450.0,
+      "type": "AI",
+      "add": 25.0
+     },
+     "vit_c": {
+      "v": 95.0,
+      "type": "RDA",
+      "add": 10.0
+     },
+     "calcium": {
+      "v": 800.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 290.0,
+      "type": "RDA",
+      "add": 30.0
+     },
+     "iron": {
+      "none": true,
+      "note": "Thai DRI ไม่กำหนดเหล็กจากอาหาร; หญิงตั้งครรภ์ได้รับยาเม็ดธาตุเหล็กเสริมวันละ 60 mg (แยกจากยอดอาหาร)"
+     },
+     "iodine": {
+      "v": 200.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 10.8,
+      "type": "RDA",
+      "add": 1.6
+     },
+     "selenium": {
+      "v": 60.0,
+      "type": "RDA",
+      "add": 5.0
+     },
+     "copper": {
+      "v": 1.5,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    }
+   }
+  },
+  {
+   "id": "p2",
+   "kind": "preg",
+   "sex": "F",
+   "label": "หญิงตั้งครรภ์ ไตรมาส 2",
+   "energyAdd": [
+    250.0,
+    300.0
+   ],
+   "proteinAdd": 10,
+   "notesKey": "p",
+   "baseBands": [
+    "t16",
+    "a19",
+    "a31"
+   ],
+   "fatE": [
+    20,
+    35
+   ],
+   "byBase": {
+    "t16": {
+     "vit_a": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 100.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 75.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.3,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.3,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "niacin_ne": {
+      "v": 18.0,
+      "type": "RDA",
+      "add": 4.0
+     },
+     "pantothenic": {
+      "v": 6.0,
+      "type": "AI",
+      "add": 1.0
+     },
+     "vit_b6": {
+      "v": 1.8,
+      "type": "RDA",
+      "add": 0.6
+     },
+     "folate_dfe": {
+      "v": 550.0,
+      "type": "RDA",
+      "add": 250.0
+     },
+     "vit_b12": {
+      "v": 2.6,
+      "type": "RDA",
+      "add": 0.2
+     },
+     "biotin": {
+      "v": 25.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "choline": {
+      "v": 425.0,
+      "type": "AI",
+      "add": 25.0
+     },
+     "vit_c": {
+      "v": 90.0,
+      "type": "RDA",
+      "add": 10.0
+     },
+     "calcium": {
+      "v": 1000.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 1000.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 280.0,
+      "type": "RDA",
+      "add": 30.0
+     },
+     "iron": {
+      "none": true,
+      "note": "Thai DRI ไม่กำหนดเหล็กจากอาหาร; หญิงตั้งครรภ์ได้รับยาเม็ดธาตุเหล็กเสริมวันละ 60 mg (แยกจากยอดอาหาร)"
+     },
+     "iodine": {
+      "v": 180.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 11.4,
+      "type": "RDA",
+      "add": 1.6
+     },
+     "selenium": {
+      "v": 60.0,
+      "type": "RDA",
+      "add": 5.0
+     },
+     "copper": {
+      "v": 1.3,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    },
+    "a19": {
+     "vit_a": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 100.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 90.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "niacin_ne": {
+      "v": 18.0,
+      "type": "RDA",
+      "add": 4.0
+     },
+     "pantothenic": {
+      "v": 6.0,
+      "type": "AI",
+      "add": 1.0
+     },
+     "vit_b6": {
+      "v": 1.9,
+      "type": "RDA",
+      "add": 0.6
+     },
+     "folate_dfe": {
+      "v": 550.0,
+      "type": "RDA",
+      "add": 250.0
+     },
+     "vit_b12": {
+      "v": 2.6,
+      "type": "RDA",
+      "add": 0.2
+     },
+     "biotin": {
+      "v": 30.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "choline": {
+      "v": 450.0,
+      "type": "AI",
+      "add": 25.0
+     },
+     "vit_c": {
+      "v": 95.0,
+      "type": "RDA",
+      "add": 10.0
+     },
+     "calcium": {
+      "v": 800.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 280.0,
+      "type": "RDA",
+      "add": 30.0
+     },
+     "iron": {
+      "none": true,
+      "note": "Thai DRI ไม่กำหนดเหล็กจากอาหาร; หญิงตั้งครรภ์ได้รับยาเม็ดธาตุเหล็กเสริมวันละ 60 mg (แยกจากยอดอาหาร)"
+     },
+     "iodine": {
+      "v": 200.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 11.3,
+      "type": "RDA",
+      "add": 1.6
+     },
+     "selenium": {
+      "v": 60.0,
+      "type": "RDA",
+      "add": 5.0
+     },
+     "copper": {
+      "v": 1.5,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    },
+    "a31": {
+     "vit_a": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 100.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 90.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "niacin_ne": {
+      "v": 18.0,
+      "type": "RDA",
+      "add": 4.0
+     },
+     "pantothenic": {
+      "v": 6.0,
+      "type": "AI",
+      "add": 1.0
+     },
+     "vit_b6": {
+      "v": 1.9,
+      "type": "RDA",
+      "add": 0.6
+     },
+     "folate_dfe": {
+      "v": 550.0,
+      "type": "RDA",
+      "add": 250.0
+     },
+     "vit_b12": {
+      "v": 2.6,
+      "type": "RDA",
+      "add": 0.2
+     },
+     "biotin": {
+      "v": 30.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "choline": {
+      "v": 450.0,
+      "type": "AI",
+      "add": 25.0
+     },
+     "vit_c": {
+      "v": 95.0,
+      "type": "RDA",
+      "add": 10.0
+     },
+     "calcium": {
+      "v": 800.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 290.0,
+      "type": "RDA",
+      "add": 30.0
+     },
+     "iron": {
+      "none": true,
+      "note": "Thai DRI ไม่กำหนดเหล็กจากอาหาร; หญิงตั้งครรภ์ได้รับยาเม็ดธาตุเหล็กเสริมวันละ 60 mg (แยกจากยอดอาหาร)"
+     },
+     "iodine": {
+      "v": 200.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 10.8,
+      "type": "RDA",
+      "add": 1.6
+     },
+     "selenium": {
+      "v": 60.0,
+      "type": "RDA",
+      "add": 5.0
+     },
+     "copper": {
+      "v": 1.5,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    }
+   }
+  },
+  {
+   "id": "p3",
+   "kind": "preg",
+   "sex": "F",
+   "label": "หญิงตั้งครรภ์ ไตรมาส 3",
+   "energyAdd": [
+    450.0,
+    500.0
+   ],
+   "proteinAdd": 31,
+   "notesKey": "p",
+   "baseBands": [
+    "t16",
+    "a19",
+    "a31"
+   ],
+   "fatE": [
+    20,
+    35
+   ],
+   "byBase": {
+    "t16": {
+     "vit_a": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 100.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 75.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.3,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.3,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "niacin_ne": {
+      "v": 18.0,
+      "type": "RDA",
+      "add": 4.0
+     },
+     "pantothenic": {
+      "v": 6.0,
+      "type": "AI",
+      "add": 1.0
+     },
+     "vit_b6": {
+      "v": 1.8,
+      "type": "RDA",
+      "add": 0.6
+     },
+     "folate_dfe": {
+      "v": 550.0,
+      "type": "RDA",
+      "add": 250.0
+     },
+     "vit_b12": {
+      "v": 2.6,
+      "type": "RDA",
+      "add": 0.2
+     },
+     "biotin": {
+      "v": 25.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "choline": {
+      "v": 425.0,
+      "type": "AI",
+      "add": 25.0
+     },
+     "vit_c": {
+      "v": 90.0,
+      "type": "RDA",
+      "add": 10.0
+     },
+     "calcium": {
+      "v": 1000.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 1000.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 280.0,
+      "type": "RDA",
+      "add": 30.0
+     },
+     "iron": {
+      "none": true,
+      "note": "Thai DRI ไม่กำหนดเหล็กจากอาหาร; หญิงตั้งครรภ์ได้รับยาเม็ดธาตุเหล็กเสริมวันละ 60 mg (แยกจากยอดอาหาร)"
+     },
+     "iodine": {
+      "v": 180.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 11.4,
+      "type": "RDA",
+      "add": 1.6
+     },
+     "selenium": {
+      "v": 60.0,
+      "type": "RDA",
+      "add": 5.0
+     },
+     "copper": {
+      "v": 1.3,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    },
+    "a19": {
+     "vit_a": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 100.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 90.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "niacin_ne": {
+      "v": 18.0,
+      "type": "RDA",
+      "add": 4.0
+     },
+     "pantothenic": {
+      "v": 6.0,
+      "type": "AI",
+      "add": 1.0
+     },
+     "vit_b6": {
+      "v": 1.9,
+      "type": "RDA",
+      "add": 0.6
+     },
+     "folate_dfe": {
+      "v": 550.0,
+      "type": "RDA",
+      "add": 250.0
+     },
+     "vit_b12": {
+      "v": 2.6,
+      "type": "RDA",
+      "add": 0.2
+     },
+     "biotin": {
+      "v": 30.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "choline": {
+      "v": 450.0,
+      "type": "AI",
+      "add": 25.0
+     },
+     "vit_c": {
+      "v": 95.0,
+      "type": "RDA",
+      "add": 10.0
+     },
+     "calcium": {
+      "v": 800.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 280.0,
+      "type": "RDA",
+      "add": 30.0
+     },
+     "iron": {
+      "none": true,
+      "note": "Thai DRI ไม่กำหนดเหล็กจากอาหาร; หญิงตั้งครรภ์ได้รับยาเม็ดธาตุเหล็กเสริมวันละ 60 mg (แยกจากยอดอาหาร)"
+     },
+     "iodine": {
+      "v": 200.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 11.3,
+      "type": "RDA",
+      "add": 1.6
+     },
+     "selenium": {
+      "v": 60.0,
+      "type": "RDA",
+      "add": 5.0
+     },
+     "copper": {
+      "v": 1.5,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    },
+    "a31": {
+     "vit_a": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 100.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 90.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "niacin_ne": {
+      "v": 18.0,
+      "type": "RDA",
+      "add": 4.0
+     },
+     "pantothenic": {
+      "v": 6.0,
+      "type": "AI",
+      "add": 1.0
+     },
+     "vit_b6": {
+      "v": 1.9,
+      "type": "RDA",
+      "add": 0.6
+     },
+     "folate_dfe": {
+      "v": 550.0,
+      "type": "RDA",
+      "add": 250.0
+     },
+     "vit_b12": {
+      "v": 2.6,
+      "type": "RDA",
+      "add": 0.2
+     },
+     "biotin": {
+      "v": 30.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "choline": {
+      "v": 450.0,
+      "type": "AI",
+      "add": 25.0
+     },
+     "vit_c": {
+      "v": 95.0,
+      "type": "RDA",
+      "add": 10.0
+     },
+     "calcium": {
+      "v": 800.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 290.0,
+      "type": "RDA",
+      "add": 30.0
+     },
+     "iron": {
+      "none": true,
+      "note": "Thai DRI ไม่กำหนดเหล็กจากอาหาร; หญิงตั้งครรภ์ได้รับยาเม็ดธาตุเหล็กเสริมวันละ 60 mg (แยกจากยอดอาหาร)"
+     },
+     "iodine": {
+      "v": 200.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 10.8,
+      "type": "RDA",
+      "add": 1.6
+     },
+     "selenium": {
+      "v": 60.0,
+      "type": "RDA",
+      "add": 5.0
+     },
+     "copper": {
+      "v": 1.5,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    }
+   }
+  },
+  {
+   "id": "l0",
+   "kind": "lact",
+   "sex": "F",
+   "label": "หญิงให้นมบุตร 0–5 เดือน",
+   "energyAdd": [
+    500.0,
+    500.0
+   ],
+   "proteinAdd": 19,
+   "notesKey": "l0",
+   "baseBands": [
+    "t16",
+    "a19",
+    "a31"
+   ],
+   "fatE": [
+    20,
+    35
+   ],
+   "byBase": {
+    "t16": {
+     "vit_a": {
+      "v": 1300.0,
+      "type": "RDA",
+      "add": 700.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 75.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.3,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.5,
+      "type": "RDA",
+      "add": 0.5
+     },
+     "niacin_ne": {
+      "v": 17.0,
+      "type": "RDA",
+      "add": 3.0
+     },
+     "pantothenic": {
+      "v": 7.0,
+      "type": "AI",
+      "add": 2.0
+     },
+     "vit_b6": {
+      "v": 1.9,
+      "type": "RDA",
+      "add": 0.7
+     },
+     "folate_dfe": {
+      "v": 450.0,
+      "type": "RDA",
+      "add": 150.0
+     },
+     "vit_b12": {
+      "v": 2.8,
+      "type": "RDA",
+      "add": 0.4
+     },
+     "biotin": {
+      "v": 30.0,
+      "type": "AI",
+      "add": 5.0
+     },
+     "choline": {
+      "v": 525.0,
+      "type": "AI",
+      "add": 125.0
+     },
+     "vit_c": {
+      "v": 140.0,
+      "type": "RDA",
+      "add": 60.0
+     },
+     "calcium": {
+      "v": 1000.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 1000.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 250.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "iron": {
+      "v": 13.0,
+      "type": "RDA",
+      "note": "หญิงให้นมบุตร 0–5 เดือน 13 mg/วัน (ค่าทั้งหมด ไม่ใช่ส่วนเพิ่ม)"
+     },
+     "iodine": {
+      "v": 180.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 12.7,
+      "type": "RDA",
+      "add": 2.9
+     },
+     "selenium": {
+      "v": 70.0,
+      "type": "RDA",
+      "add": 15.0
+     },
+     "copper": {
+      "v": 1.3,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    },
+    "a19": {
+     "vit_a": {
+      "v": 1300.0,
+      "type": "RDA",
+      "add": 700.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 90.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.6,
+      "type": "RDA",
+      "add": 0.5
+     },
+     "niacin_ne": {
+      "v": 17.0,
+      "type": "RDA",
+      "add": 3.0
+     },
+     "pantothenic": {
+      "v": 7.0,
+      "type": "AI",
+      "add": 2.0
+     },
+     "vit_b6": {
+      "v": 2.0,
+      "type": "RDA",
+      "add": 0.7
+     },
+     "folate_dfe": {
+      "v": 450.0,
+      "type": "RDA",
+      "add": 150.0
+     },
+     "vit_b12": {
+      "v": 2.8,
+      "type": "RDA",
+      "add": 0.4
+     },
+     "biotin": {
+      "v": 35.0,
+      "type": "AI",
+      "add": 5.0
+     },
+     "choline": {
+      "v": 550.0,
+      "type": "AI",
+      "add": 125.0
+     },
+     "vit_c": {
+      "v": 145.0,
+      "type": "RDA",
+      "add": 60.0
+     },
+     "calcium": {
+      "v": 800.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 250.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "iron": {
+      "v": 13.0,
+      "type": "RDA",
+      "note": "หญิงให้นมบุตร 0–5 เดือน 13 mg/วัน (ค่าทั้งหมด ไม่ใช่ส่วนเพิ่ม)"
+     },
+     "iodine": {
+      "v": 200.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 12.6,
+      "type": "RDA",
+      "add": 2.9
+     },
+     "selenium": {
+      "v": 70.0,
+      "type": "RDA",
+      "add": 15.0
+     },
+     "copper": {
+      "v": 1.5,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    },
+    "a31": {
+     "vit_a": {
+      "v": 1300.0,
+      "type": "RDA",
+      "add": 700.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 90.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.6,
+      "type": "RDA",
+      "add": 0.5
+     },
+     "niacin_ne": {
+      "v": 17.0,
+      "type": "RDA",
+      "add": 3.0
+     },
+     "pantothenic": {
+      "v": 7.0,
+      "type": "AI",
+      "add": 2.0
+     },
+     "vit_b6": {
+      "v": 2.0,
+      "type": "RDA",
+      "add": 0.7
+     },
+     "folate_dfe": {
+      "v": 450.0,
+      "type": "RDA",
+      "add": 150.0
+     },
+     "vit_b12": {
+      "v": 2.8,
+      "type": "RDA",
+      "add": 0.4
+     },
+     "biotin": {
+      "v": 35.0,
+      "type": "AI",
+      "add": 5.0
+     },
+     "choline": {
+      "v": 550.0,
+      "type": "AI",
+      "add": 125.0
+     },
+     "vit_c": {
+      "v": 145.0,
+      "type": "RDA",
+      "add": 60.0
+     },
+     "calcium": {
+      "v": 800.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 260.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "iron": {
+      "v": 13.0,
+      "type": "RDA",
+      "note": "หญิงให้นมบุตร 0–5 เดือน 13 mg/วัน (ค่าทั้งหมด ไม่ใช่ส่วนเพิ่ม)"
+     },
+     "iodine": {
+      "v": 200.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 12.1,
+      "type": "RDA",
+      "add": 2.9
+     },
+     "selenium": {
+      "v": 70.0,
+      "type": "RDA",
+      "add": 15.0
+     },
+     "copper": {
+      "v": 1.5,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    }
+   }
+  },
+  {
+   "id": "l6",
+   "kind": "lact",
+   "sex": "F",
+   "label": "หญิงให้นมบุตร 6–11 เดือน",
+   "energyAdd": [
+    300.0,
+    300.0
+   ],
+   "proteinAdd": 13,
+   "notesKey": "l6",
+   "baseBands": [
+    "t16",
+    "a19",
+    "a31"
+   ],
+   "fatE": [
+    20,
+    35
+   ],
+   "byBase": {
+    "t16": {
+     "vit_a": {
+      "v": 1300.0,
+      "type": "RDA",
+      "add": 700.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 75.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.3,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.5,
+      "type": "RDA",
+      "add": 0.5
+     },
+     "niacin_ne": {
+      "v": 17.0,
+      "type": "RDA",
+      "add": 3.0
+     },
+     "pantothenic": {
+      "v": 7.0,
+      "type": "AI",
+      "add": 2.0
+     },
+     "vit_b6": {
+      "v": 1.9,
+      "type": "RDA",
+      "add": 0.7
+     },
+     "folate_dfe": {
+      "v": 450.0,
+      "type": "RDA",
+      "add": 150.0
+     },
+     "vit_b12": {
+      "v": 2.8,
+      "type": "RDA",
+      "add": 0.4
+     },
+     "biotin": {
+      "v": 30.0,
+      "type": "AI",
+      "add": 5.0
+     },
+     "choline": {
+      "v": 525.0,
+      "type": "AI",
+      "add": 125.0
+     },
+     "vit_c": {
+      "v": 140.0,
+      "type": "RDA",
+      "add": 60.0
+     },
+     "calcium": {
+      "v": 1000.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 1000.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 250.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "iron": {
+      "v": 20.0,
+      "type": "RDA",
+      "note": "หญิงให้นมบุตร 6–11 เดือน 20 mg/วัน (ค่าทั้งหมด ไม่ใช่ส่วนเพิ่ม)"
+     },
+     "iodine": {
+      "v": 180.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 12.7,
+      "type": "RDA",
+      "add": 2.9
+     },
+     "selenium": {
+      "v": 70.0,
+      "type": "RDA",
+      "add": 15.0
+     },
+     "copper": {
+      "v": 1.3,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    },
+    "a19": {
+     "vit_a": {
+      "v": 1300.0,
+      "type": "RDA",
+      "add": 700.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 90.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.6,
+      "type": "RDA",
+      "add": 0.5
+     },
+     "niacin_ne": {
+      "v": 17.0,
+      "type": "RDA",
+      "add": 3.0
+     },
+     "pantothenic": {
+      "v": 7.0,
+      "type": "AI",
+      "add": 2.0
+     },
+     "vit_b6": {
+      "v": 2.0,
+      "type": "RDA",
+      "add": 0.7
+     },
+     "folate_dfe": {
+      "v": 450.0,
+      "type": "RDA",
+      "add": 150.0
+     },
+     "vit_b12": {
+      "v": 2.8,
+      "type": "RDA",
+      "add": 0.4
+     },
+     "biotin": {
+      "v": 35.0,
+      "type": "AI",
+      "add": 5.0
+     },
+     "choline": {
+      "v": 550.0,
+      "type": "AI",
+      "add": 125.0
+     },
+     "vit_c": {
+      "v": 145.0,
+      "type": "RDA",
+      "add": 60.0
+     },
+     "calcium": {
+      "v": 800.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 250.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "iron": {
+      "v": 20.0,
+      "type": "RDA",
+      "note": "หญิงให้นมบุตร 6–11 เดือน 20 mg/วัน (ค่าทั้งหมด ไม่ใช่ส่วนเพิ่ม)"
+     },
+     "iodine": {
+      "v": 200.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 12.6,
+      "type": "RDA",
+      "add": 2.9
+     },
+     "selenium": {
+      "v": 70.0,
+      "type": "RDA",
+      "add": 15.0
+     },
+     "copper": {
+      "v": 1.5,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    },
+    "a31": {
+     "vit_a": {
+      "v": 1300.0,
+      "type": "RDA",
+      "add": 700.0
+     },
+     "vit_d": {
+      "v": 15.0,
+      "type": "RDA",
+      "add": 0.0,
+      "iu": 600.0
+     },
+     "vit_e": {
+      "v": 11.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "vit_k": {
+      "v": 90.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "vit_b1": {
+      "v": 1.4,
+      "type": "RDA",
+      "add": 0.3
+     },
+     "vit_b2": {
+      "v": 1.6,
+      "type": "RDA",
+      "add": 0.5
+     },
+     "niacin_ne": {
+      "v": 17.0,
+      "type": "RDA",
+      "add": 3.0
+     },
+     "pantothenic": {
+      "v": 7.0,
+      "type": "AI",
+      "add": 2.0
+     },
+     "vit_b6": {
+      "v": 2.0,
+      "type": "RDA",
+      "add": 0.7
+     },
+     "folate_dfe": {
+      "v": 450.0,
+      "type": "RDA",
+      "add": 150.0
+     },
+     "vit_b12": {
+      "v": 2.8,
+      "type": "RDA",
+      "add": 0.4
+     },
+     "biotin": {
+      "v": 35.0,
+      "type": "AI",
+      "add": 5.0
+     },
+     "choline": {
+      "v": 550.0,
+      "type": "AI",
+      "add": 125.0
+     },
+     "vit_c": {
+      "v": 145.0,
+      "type": "RDA",
+      "add": 60.0
+     },
+     "calcium": {
+      "v": 800.0,
+      "type": "AI",
+      "add": 0.0
+     },
+     "phosphorus": {
+      "v": 700.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "magnesium": {
+      "v": 260.0,
+      "type": "RDA",
+      "add": 0.0
+     },
+     "iron": {
+      "v": 20.0,
+      "type": "RDA",
+      "note": "หญิงให้นมบุตร 6–11 เดือน 20 mg/วัน (ค่าทั้งหมด ไม่ใช่ส่วนเพิ่ม)"
+     },
+     "iodine": {
+      "v": 200.0,
+      "type": "RDA",
+      "add": 50.0
+     },
+     "zinc": {
+      "v": 12.1,
+      "type": "RDA",
+      "add": 2.9
+     },
+     "selenium": {
+      "v": 70.0,
+      "type": "RDA",
+      "add": 15.0
+     },
+     "copper": {
+      "v": 1.5,
+      "type": "AI",
+      "add": 0.2
+     },
+     "manganese": {
+      "v": 2.5,
+      "type": "AI",
+      "add": 0.0
+     }
+    }
+   }
+  }
+ ]
 }
