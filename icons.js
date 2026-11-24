@@ -1,26 +1,49 @@
 /* Original flat illustrations and line icons (no third-party artwork). */
 (function (root) {
   'use strict';
-  const skin = '#f4c7a1', skinD = '#e3a982', hair = '#3b3a36', hairG = '#d9d9d6', line = '#33413d';
-  const face = (cx, cy, r, extra = '') => `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${skin}" stroke="${line}" stroke-width="1.6"/>
-    <circle cx="${cx - r * 0.35}" cy="${cy}" r="1.3" fill="${line}"/><circle cx="${cx + r * 0.35}" cy="${cy}" r="1.3" fill="${line}"/>
-    <path d="M${cx - r * 0.3} ${cy + r * 0.4} q${r * 0.3} ${r * 0.25} ${r * 0.6} 0" fill="none" stroke="${line}" stroke-width="1.4" stroke-linecap="round"/>${extra}`;
-  const body = (fill, w = 30) => `<path d="M${40 - w / 2} 78 q0 -18 ${w / 2} -18 q${w / 2} 0 ${w / 2} 18z" fill="${fill}" stroke="${line}" stroke-width="1.6"/>`;
-  const wrap = inner => `<svg viewBox="0 0 80 80" width="64" height="64" aria-hidden="true">${inner}</svg>`;
-
+  const skin = '#f2c5a0', skinS = '#e2a986', line = '#2f3d39';
+  const S = 'stroke="' + '#2f3d39' + '" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"';
+  /* Half-body portrait on a 96x96 canvas. opts: shirt, collar, hairBack, hairFront, extra, faceExtra, cy (head centre y), r (head radius) */
+  function person(o) {
+    const cy = o.cy || 38, r = o.r || 17, cx = 48;
+    const eyes = `<circle cx="${cx - 6}" cy="${cy + 1}" r="1.7" fill="${line}"/><circle cx="${cx + 6}" cy="${cy + 1}" r="1.7" fill="${line}"/>`;
+    const mouth = `<path d="M${cx - 5} ${cy + 8} q5 4 10 0" fill="none" ${S}/>`;
+    const cheeks = `<circle cx="${cx - 10}" cy="${cy + 6}" r="2.6" fill="#f0a98c" opacity=".55"/><circle cx="${cx + 10}" cy="${cy + 6}" r="2.6" fill="#f0a98c" opacity=".55"/>`;
+    const ears = `<ellipse cx="${cx - r}" cy="${cy + 2}" rx="3" ry="4.2" fill="${skin}" ${S}/><ellipse cx="${cx + r}" cy="${cy + 2}" rx="3" ry="4.2" fill="${skin}" ${S}/>`;
+    return `<svg viewBox="0 0 96 96" width="84" height="84" aria-hidden="true">
+      ${o.hairBack || ''}
+      <path d="M${cx - 30} 96 q0 -26 ${30} -27 q30 1 30 27z" fill="${o.shirt}" ${S}/>
+      ${o.collar || ''}
+      <path d="M${cx - 6} ${cy + r - 2} v8 q6 4 12 0 v-8" fill="${skinS}" ${S}/>
+      ${ears}<circle cx="${cx}" cy="${cy}" r="${r}" fill="${skin}" ${S}/>
+      ${cheeks}${eyes}${mouth}${o.faceExtra || ''}${o.hairFront || ''}${o.extra || ''}</svg>`;
+  }
+  const H = '#3a332e', HG = '#d7d6d2';
   const PEOPLE = {
-    inf: wrap(`<path d="M26 74 q-4 -26 14 -28 q18 2 14 28z" fill="#cfe6f3" stroke="${line}" stroke-width="1.6"/>
-      <path d="M28 60 q12 8 24 -2" fill="none" stroke="${line}" stroke-width="1.4"/>${face(40, 34, 14)}<path d="M37 21 q3 -5 6 0" fill="none" stroke="${line}" stroke-width="1.4"/>`),
-    child: wrap(`${body('#7fb8e6', 32)}${face(40, 38, 15)}<path d="M25 34 q2 -16 15 -16 q13 0 15 16 q-8 -8 -15 -6 q-8 -2 -15 6z" fill="${hair}"/>`),
-    teen: wrap(`${body('#7cc39b', 36)}${face(40, 36, 15)}<path d="M25 33 q0 -17 15 -17 q15 0 15 17 l-3 -6 q-6 -6 -12 -3 q-8 -3 -12 3z" fill="${hair}"/>`),
-    adult: wrap(`${body('#a9c8ea', 38)}<path d="M36 60 l4 7 l4 -7" fill="#fff" stroke="${line}" stroke-width="1.3"/>${face(40, 35, 14)}<path d="M26 32 q0 -15 14 -15 q14 0 14 15 q-5 -7 -14 -6 q-9 -1 -14 6z" fill="${hair}"/>`),
-    elder: wrap(`${body('#8fbf9f', 38)}${face(40, 36, 14, `<circle cx="35" cy="36" r="4" fill="none" stroke="${line}" stroke-width="1.3"/><circle cx="45" cy="36" r="4" fill="none" stroke="${line}" stroke-width="1.3"/><path d="M39 36 h2" stroke="${line}" stroke-width="1.3"/>`)}
-      <path d="M26 33 q1 -13 14 -13 q13 0 14 13 q-3 -5 -6 -6 q-8 -3 -16 0 q-3 1 -6 6z" fill="${hairG}" stroke="${line}" stroke-width="1"/><path d="M34 45 q6 4 12 0" fill="none" stroke="${hairG}" stroke-width="3" stroke-linecap="round"/>`),
-    preg: wrap(`<path d="M30 78 q-2 -18 8 -20 q6 -1 8 4 q12 2 10 12 q-1 4 -4 4z" fill="#86c4a5" stroke="${line}" stroke-width="1.6"/>
-      <path d="M44 64 q9 1 9 8" fill="none" stroke="${line}" stroke-width="1.3"/>${face(38, 34, 13)}<path d="M25 34 q-1 -18 14 -17 q13 1 12 14 q-3 9 -1 22 q-4 -10 -2 -18 q-6 -6 -12 -6 q-8 2 -11 5z" fill="${hair}"/>`),
-    lact: wrap(`${body('#86c4a5', 38)}${face(36, 32, 12)}<path d="M23 32 q-1 -16 13 -15 q12 1 11 13 q-1 8 0 16 q-4 -8 -2 -15 q-5 -5 -10 -5 q-7 2 -10 5z" fill="${hair}"/>
-      <ellipse cx="44" cy="60" rx="11" ry="7" fill="#fff" stroke="${line}" stroke-width="1.4"/><circle cx="50" cy="56" r="5.5" fill="${skin}" stroke="${line}" stroke-width="1.4"/>
-      <path d="M30 66 q10 6 24 -2" fill="none" stroke="${skinD}" stroke-width="5" stroke-linecap="round"/>`)
+    inf: `<svg viewBox="0 0 96 96" width="84" height="84" aria-hidden="true">
+      <path d="M22 92 q-6 -38 26 -42 q32 4 26 42z" fill="#cfe4f2" ${S}/>
+      <path d="M28 70 q20 14 40 0 M30 82 q18 10 36 0" fill="none" ${S} opacity=".6"/>
+      <circle cx="48" cy="40" r="19" fill="${skin}" ${S}/>
+      <circle cx="41" cy="41" r="1.8" fill="${line}"/><circle cx="55" cy="41" r="1.8" fill="${line}"/>
+      <ellipse cx="48" cy="50" rx="3.5" ry="2.6" fill="#e98f8f" ${S}/>
+      <circle cx="37" cy="47" r="2.8" fill="#f0a98c" opacity=".55"/><circle cx="59" cy="47" r="2.8" fill="#f0a98c" opacity=".55"/>
+      <path d="M44 22 q4 -6 8 0" fill="none" ${S}/></svg>`,
+    child: person({ shirt: '#7fb6e3', cy: 42, r: 16, hairFront: `<path d="M32 40 q-1 -19 16 -19 q17 0 16 19 q-5 -9 -16 -9 q-11 0 -16 9z" fill="${H}" ${S}/>`,
+      collar: '<path d="M40 70 l8 7 l8 -7" fill="#fff" stroke="#2f3d39" stroke-width="1.6"/>' }),
+    teen: person({ shirt: '#78bf98', hairFront: `<path d="M31 36 q-1 -18 17 -18 q18 0 17 18 l-4 -6 q-6 -7 -13 -4 q-9 -3 -14 4z" fill="${H}" ${S}/>` }),
+    adult: person({ shirt: '#a7c6e8', hairFront: `<path d="M31 35 q0 -17 17 -17 q17 0 17 17 q-6 -8 -17 -7 q-11 -1 -17 7z" fill="${H}" ${S}/>`,
+      collar: '<path d="M41 70 l7 9 l7 -9" fill="#fff" stroke="#2f3d39" stroke-width="1.6"/><path d="M48 79 v17" stroke="#2f3d39" stroke-width="1.4"/>' }),
+    elder: person({ shirt: '#8dbd9d', hairFront: `<path d="M31 36 q1 -16 17 -16 q16 0 17 16 q-3 -6 -7 -7 q-10 -3 -20 0 q-4 1 -7 7z" fill="${HG}" ${S}/>`,
+      faceExtra: `<circle cx="42" cy="39" r="5" fill="none" ${S}/><circle cx="54" cy="39" r="5" fill="none" ${S}/><path d="M47 39 h2" ${S}/><path d="M40 50 q8 5 16 0" fill="none" stroke="${HG}" stroke-width="3.5" stroke-linecap="round"/>` }),
+    preg: person({ shirt: '#83c3a3',
+      hairBack: `<path d="M29 40 q-3 -24 19 -24 q20 0 19 22 q-1 14 2 28 q-8 -4 -10 -14z" fill="${H}" ${S}/>`,
+      hairFront: `<path d="M31 37 q2 -16 17 -17 q14 0 17 13 q-9 -5 -16 -4 q-10 1 -18 8z" fill="${H}" ${S}/>`,
+      extra: `<path d="M50 96 q2 -18 14 -18 q12 2 12 18z" fill="#6fb592" ${S}/><path d="M58 84 q6 2 8 8" fill="none" ${S} opacity=".6"/>` }),
+    lact: person({ shirt: '#83c3a3', cy: 34, r: 15,
+      hairBack: `<path d="M31 36 q-3 -22 17 -22 q18 0 17 20 q-1 12 2 24 q-8 -4 -9 -12z" fill="${H}" ${S}/>`,
+      hairFront: `<path d="M33 33 q2 -14 15 -15 q13 0 16 12 q-9 -5 -15 -4 q-9 1 -16 7z" fill="${H}" ${S}/>`,
+      extra: `<ellipse cx="54" cy="80" rx="17" ry="10" fill="#ffffff" ${S}/><circle cx="64" cy="73" r="8" fill="${skin}" ${S}/>
+        <circle cx="62" cy="73" r="1.2" fill="${line}"/><path d="M28 86 q22 10 44 -4" fill="none" stroke="${skinS}" stroke-width="7" stroke-linecap="round"/><path d="M28 86 q22 10 44 -4" fill="none" ${S} opacity=".5"/>` })
   };
 
   const ic = (d, s = 20) => `<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
