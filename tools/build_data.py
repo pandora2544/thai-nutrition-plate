@@ -1,4 +1,6 @@
-import csv, json, sys
+import csv, json, sys, os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from plate_groups import plate_group
 src = sys.argv[1]; out = sys.argv[2]
 rows = list(csv.DictReader(open(src, encoding='utf-8-sig')))
 nutr = list(csv.DictReader(open(sys.argv[3], encoding='utf-8-sig')))
@@ -15,7 +17,7 @@ for r in rows:
         nut[k] = [lo, hi] if lo != hi else lo
     b = float(r['basisAmount']); assert b > 0
     foods.append({'id': r['id'], 'n': r['name'], 'a': r['aliases'], 'c': r['category'], 'b': b, 'u': r['basisUnit'],
-                  's': r['sourceSet'], 'src': r['source'], 'url': r['url'], 'note': r['note'], 'v': nut})
+                  's': r['sourceSet'], 'g': plate_group(r['name'], r['category']), 'src': r['source'], 'url': r['url'], 'note': r['note'], 'v': nut})
 ids = [f['id'] for f in foods]; assert len(ids) == len(set(ids))
 json.dump({'nutrients': nutr, 'foods': foods}, open(out, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 print(len(foods), 'foods')

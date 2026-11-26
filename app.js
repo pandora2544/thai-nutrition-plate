@@ -94,17 +94,21 @@
     const tgt = mealTarget(mId);
     let h = `<h2>${Icons.ICON.two}จัดจาน · ${esc(p.label)}</h2><div class="tabs noprint">` + D.mealShares.meals.map(m => `<button data-meal="${m.id}" class="${m.id === mId ? 'on' : ''}">${esc(m.label)} (${state.meals[m.id].length})</button>`).join('') + `</div>
       <div class="two"><div class="noprint"><input class="search" id="q" placeholder="ค้นอาหาร เช่น ข้าว ไข่ ปลา นม ผัก" autocomplete="off"><div class="results" id="res"></div></div><div>
-      <h3>${esc(D.mealShares.meals.find(m => m.id === mId).label)} · เป้า ${tgt ? fmt(tgt, 0) + ' kcal' : '–'}</h3>
-      <div class="scroll"><table><tr><th>รายการ</th><th>ปริมาณ</th><th class="num">g/ml</th><th class="num">kcal</th><th class="num">C (g)</th><th class="num">P (g)</th><th class="num">ไขมัน (g)</th><th></th></tr>` +
+      <h3>${esc(D.mealShares.meals.find(m => m.id === mId).label)} · เป้า ${tgt ? fmt(tgt, 0) + ' kcal' : '–'} · จานนี้มี ${items.length} อย่าง</h3>
+      <div class="plate-box">${Plate.draw(calc.map((c, i) => ({ idx: i, area: items[i].area || c.f.g, name: c.f.n, grams: c.error ? 100 : c.amount,
+        titleText: esc(c.f.n + (c.error ? '' : ' ' + fmt(c.amount, 0) + ' ' + unitTh(c.f.u)) + (c.s && c.s.energy ? ' · ' + fmt(c.s.energy[0], 0) + ' kcal' : '')) })))}</div>
+      <div class="scroll"><table><tr><th>#</th><th>รายการ</th><th>ช่องบนจาน</th><th>ปริมาณ</th><th class="num">g/ml</th><th class="num">kcal</th><th class="num">C (g)</th><th class="num">P (g)</th><th class="num">ไขมัน (g)</th><th></th></tr>` +
       calc.map((c, i) => {
         const it = items[i], f = c.f;
         const cell = k => c.error ? '' : c.s[k] ? fmt(c.s[k][0], 1) + (c.s[k][1] !== c.s[k][0] ? '–' + fmt(c.s[k][1], 1) : '') : '<span class="na">n.a.</span>';
-        return `<tr><td>${esc(f.n)}<br><small class="na">${esc(f.id)} · ${esc(f.s)}</small></td>
+        const ar = it.area || f.g;
+        return `<tr><td><span class="num-dot">${i + 1}</span></td><td>${esc(f.n)}<br><small class="na">${esc(f.id)} · ${esc(f.s)}</small></td>
+          <td><select data-i="${i}" data-f="area">${Object.entries(Plate.AREAS).map(([k, a]) => `<option value="${k}"${k === ar ? ' selected' : ''}>${esc(a.label)}</option>`).join('')}</select></td>
           <td><input data-i="${i}" data-f="value" type="number" step="any" value="${esc(it.value)}"> <select data-i="${i}" data-f="mode"><option value="unit"${it.mode !== 'kcal' ? ' selected' : ''}>${esc(unitTh(f.u))}</option><option value="kcal"${it.mode === 'kcal' ? ' selected' : ''}>kcal</option></select>${c.error ? `<div class="err">${esc(c.error)}</div>` : ''}</td>
           <td class="num">${c.error ? '' : fmt(c.amount, 1) + ' ' + esc(unitTh(f.u))}</td><td class="num">${cell('energy')}</td><td class="num">${cell('carb')}</td><td class="num">${cell('protein')}</td><td class="num">${cell('fat')}</td>
           <td><button class="x noprint" data-del="${i}" title="ลบ">×</button></td></tr>`;
       }).join('') +
-      `<tr><th>รวมมื้อนี้</th><th></th><th></th>${['energy', 'carb', 'protein', 'fat'].map(k => `<th class="num">${fmt(tot[k].lo, 1)}${tot[k].missing ? `<br><span class="na">n.a. ${tot[k].missing}</span>` : ''}</th>`).join('')}<th></th></tr></table></div>`;
+      `<tr><th></th><th>รวมมื้อนี้</th><th></th><th></th><th></th>${['energy', 'carb', 'protein', 'fat'].map(k => `<th class="num">${fmt(tot[k].lo, 1)}${tot[k].missing ? `<br><span class="na">n.a. ${tot[k].missing}</span>` : ''}</th>`).join('')}<th></th></tr></table></div>`;
     if (tgt && tot.energy.known) {
       const pct = tot.energy.lo / tgt * 100;
       h += `<p>พลังงานมื้อนี้ ${fmt(tot.energy.lo, 0)} / ${fmt(tgt, 0)} kcal · <b>${tgt - tot.energy.lo >= 0 ? 'เหลือ ' + fmt(tgt - tot.energy.lo, 0) : 'เกิน ' + fmt(tot.energy.lo - tgt, 0)} kcal</b></p><div class="bar"><i style="width:${Math.min(100, pct)}%"></i></div>`;
@@ -121,7 +125,7 @@
     const qq = n(q);
     const list = DB.foods.filter(f => !qq || n(f.n + f.a + f.id).includes(qq))
       .sort((a, b) => (b.v.energy !== undefined) - (a.v.energy !== undefined) || Object.keys(b.v).length - Object.keys(a.v).length).slice(0, 30);
-    box.innerHTML = list.map(f => `<button class="res" data-add="${esc(f.id)}"><b>${esc(f.n)}</b><small>${esc(f.src)} · ต่อ ${f.b} ${esc(unitTh(f.u))}</small><br>
+    box.innerHTML = list.map(f => `<button class="res" data-add="${esc(f.id)}"><b>${esc(f.n)}</b><small>${esc(f.src)} · ต่อ ${f.b} ${esc(unitTh(f.u))}</small><br><span class="tag">${esc(Plate.AREAS[f.g].label)}</span>
       ${f.v.energy !== undefined ? `<span class="tag">${fmt(Calc.range(f.v.energy)[0], 0)} kcal</span>` : '<span class="tag w">ไม่มีค่าพลังงาน</span>'}
       <span class="tag${Object.keys(f.v).length === 1 ? ' w' : ''}">มีข้อมูล ${Object.keys(f.v).length}/${DB.nutrients.length}</span>${f.s.includes('USDA') ? '<span class="tag">ข้อมูลต่างประเทศ</span>' : ''}</button>`).join('') || '<p>ไม่พบอาหาร</p>';
   }
