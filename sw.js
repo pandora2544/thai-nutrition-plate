@@ -1,5 +1,5 @@
 /* Network first (revalidated, so updates show at once); cached copy when offline or slow. */
-const CACHE = 'tnp-v10';
+const CACHE = 'tnp-v11';
 const FILES = ['./', 'index.html', 'style.css', 'icons.js', 'calc.js', 'plate.js', 'app.js', 'data/foods.json', 'data/groups.json', 'data/images.json'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => Promise.all(FILES.map(f => fetch(f, { cache: 'reload' }).then(r => r.ok && c.put(f, r))))));

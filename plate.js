@@ -63,8 +63,9 @@
     const [x0, y0] = p(a0), [x1, y1] = p(a1);
     return `<path d="M${CX} ${CY} L${x0.toFixed(1)} ${y0.toFixed(1)} A${R} ${R * K} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(1)} ${y1.toFixed(1)}Z" fill="${fill}"/>`;
   }
+  const src = id => (window.TNP_BUNDLE && window.TNP_BUNDLE.images[id]) || `img/${id}.webp`;
   function art(area, name, id, imgs, size) {
-    if (imgs && imgs.has(id)) { const s = size * 1.4; return `<image href="img/${id}.webp" x="${(-s / 2).toFixed(1)}" y="${(-s * 0.78).toFixed(1)}" width="${s.toFixed(1)}" height="${s.toFixed(1)}"/>`; }
+    if (imgs && imgs.has(id)) { const s = size * 1.4; return `<image href="${src(id)}" x="${(-s / 2).toFixed(1)}" y="${(-s * 0.78).toFixed(1)}" width="${s.toFixed(1)}" height="${s.toFixed(1)}"/>`; }
     const sc = size / 44;
     return `<g transform="translate(0 ${-size * 0.38}) scale(${sc.toFixed(2)})">${piece(area, name)}</g>`;
   }
@@ -118,7 +119,7 @@
   }
   /* Product image for the shop grid: Gemini image if present, else the vector drawing. */
   function thumb(area, name, id, imgs) {
-    if (imgs && imgs.has(id)) return `<img src="img/${id}.webp" alt="" loading="lazy" width="256" height="256">`;
+    if (imgs && imgs.has(id)) return `<img src="${src(id)}" alt="" loading="lazy" width="256" height="256">`;
     return `<svg viewBox="-30 -30 60 60" aria-hidden="true"><g transform="scale(1.05)">${piece(area, name)}</g></svg>`;
   }
   root.Plate = { draw, thumb, AREAS };

@@ -253,7 +253,8 @@
   async function init() {
     load();
     try {
-      const [d, g, im] = await Promise.all([fetch('data/foods.json').then(r => r.json()), fetch('data/groups.json').then(r => r.json()), fetch('data/images.json').then(r => r.ok ? r.json() : []).catch(() => [])]);
+      const B = window.TNP_BUNDLE;  // single-file build for e-learning: data is embedded, nothing is fetched
+      const [d, g, im] = B ? [B.foods, B.groups, Object.keys(B.images)] : await Promise.all([fetch('data/foods.json').then(r => r.json()), fetch('data/groups.json').then(r => r.json()), fetch('data/images.json').then(r => r.ok ? r.json() : []).catch(() => [])]);
       IMGS = new Set(im);
       DB = d; D = g; DB.nutrients.forEach(n => NUT[n.key] = n); foodsById = new Map(DB.foods.map(f => [f.id, f]));
       KEYS = DB.nutrients.map(n => n.key);
@@ -264,7 +265,7 @@
       $('#foot').innerHTML = `เวอร์ชันทดลอง · เกณฑ์: Thai DRI 2563 หน้า 439–442 · ฐานอาหาร ${DB.foods.length} ระเบียน (Thai DRI 2563, USDA SR Legacy 2018) จาก "ค้นอาหารและสารอาหาร" รุ่น 1.1.3 · ไม่มีการส่งข้อมูลที่กรอกออกจากเครื่อง`;
       wire(); go(1);
     } catch (e) { $('#loading').textContent = 'โหลดข้อมูลไม่สำเร็จ: ' + e.message; }
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+    if (!window.TNP_BUNDLE && location.protocol.startsWith('http') && 'serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
   }
   init();
 })();
