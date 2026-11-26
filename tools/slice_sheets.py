@@ -16,9 +16,21 @@ for sheet in sorted({int(r['sheet']) for r in rows}):
     path = next((os.path.join(src, f) for f in os.listdir(src) if f.lower().startswith(f'sheet-{sheet:02d}')), None)
     if not path: problems.append(f'sheet {sheet}: ไม่พบไฟล์'); continue
     im = Image.open(path).convert('RGB'); a = np.asarray(im).astype(int); H, W = a.shape[:2]
-    white = (a.min(axis=2) > 236) & (a.max(axis=2) - a.min(axis=2) < 14)
-    # background = white pixels connected to the border
-    lab, _ = ndimage.label(white)
+    # background model: a smooth quadratic surface fitted to the flat grey pixels (robust, 3 passes)
+    yy, xx = np.mgrid[0:H, 0:W] / max(H, W)
+    basis = np.stack([np.ones_like(xx), xx, yy, xx * xx, yy * yy, xx * yy], -1).reshape(-1, 6)
+    flat = a.reshape(-1, 3); grey = flat.mean(1)
+    mask = (flat.max(1) - flat.min(1) < 8) & (grey > 190) & (grey < 245)
+    for _ in range(3):
+        coef, *_ = np.linalg.lstsq(basis[mask], grey[mask], rcond=None)
+        fit = basis @ coef
+        mask = mask & (np.abs(grey - fit) < 6)
+    bgimg = fit.reshape(H, W)
+    diff = np.abs(a - bgimg[..., None]).max(axis=2)
+    soft = np.clip((diff - 7) / 14.0, 0, 1)  # soft matte: background -> 0, clearly food -> 1
+    near = (np.abs(a - bgimg[..., None]).max(axis=2) < 9)
+    # background = pixels of that colour connected to the border
+    lab, _ = ndimage.label(near)
     border = set(np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))) - {0}
     bg = np.isin(lab, list(border))
     fg = ~bg
@@ -37,9 +49,10 @@ for sheet in sorted({int(r['sheet']) for r in rows}):
         y0 = min(s[0].start for s in cells[c]); y1 = max(s[0].stop for s in cells[c])
         x0 = min(s[1].start for s in cells[c]); x1 = max(s[1].stop for s in cells[c])
         pad = 6; y0, x0 = max(0, y0 - pad), max(0, x0 - pad); y1, x1 = min(H, y1 + pad), min(W, x1 + pad)
-        rgba = np.dstack([a[y0:y1, x0:x1], np.where(fg[y0:y1, x0:x1], 255, 0)]).astype('uint8')
-        alpha = Image.fromarray(rgba[:, :, 3]).filter(__import__('PIL.ImageFilter', fromlist=['x']).GaussianBlur(1.2))
-        img = Image.fromarray(rgba[:, :, :3]); img.putalpha(alpha)
+        solid = ndimage.binary_fill_holes(ndimage.binary_closing(fg[y0:y1, x0:x1], iterations=8))
+        region = ndimage.binary_dilation(solid, iterations=3)
+        al = (soft[y0:y1, x0:x1] * region * 255).astype('uint8')  # white food on a white card/plate reads fine
+        img = Image.fromarray(a[y0:y1, x0:x1].astype('uint8')); img.putalpha(Image.fromarray(al))
         img.thumbnail((256, 256), Image.LANCZOS)
         canvas = Image.new('RGBA', (256, 256), (0, 0, 0, 0)); canvas.paste(img, ((256 - img.width) // 2, (256 - img.height) // 2), img)
         canvas.save(os.path.join(out, f'{r["id"]}.webp'), 'WEBP', quality=82, method=6)
