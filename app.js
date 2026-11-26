@@ -16,7 +16,7 @@
     { id: 'lact', label: 'หญิงให้นมบุตร', groups: ['l0', 'l6'] }];
   const BANDLAB = { inf0: '0–5 เดือน', inf6: '6–11 เดือน', c1: '1–3 ปี', c4: '4–5 ปี', c6: '6–8 ปี', t9: '9–12 ปี', t13: '13–15 ปี', t16: '16–18 ปี', a19: '19–30 ปี', a31: '31–50 ปี', a51: '51–60 ปี', a61: '61–70 ปี', a71: '71 ปีขึ้นไป' };
 
-  let DB, D, NUT = {}, foodsById, KEYS = [];
+  let DB, D, NUT = {}, foodsById, KEYS = [], IMGS = new Set();
   let state = { cat: null, sex: 'F', band: null, groupId: null, base: 'a19', mode: 'table', age: '', weight: '', pal: '1.4', activity: false,
     meal: 'm1', meals: { m1: [], m2: [], m3: [] }, checked: false, answer: {} };
 
@@ -84,51 +84,71 @@
   }
   function mealTarget(mId) { const p = prof(); const m = D.mealShares.meals.find(m => m.id === mId); return p && p.energyRange ? p.energyRange[0] * m.share : null; }
 
+  const SHOP_CATS = [['all', 'ทั้งหมด'], ['starch', 'ข้าว-แป้ง'], ['veg', 'ผัก'], ['protein', 'เนื้อสัตว์ ไข่ ถั่ว'], ['fruit', 'ผลไม้'], ['milk', 'นม'], ['fat', 'ไขมัน'], ['other', 'เครื่องปรุง']];
+  let shop = { cat: 'all', q: '', n: 24 };
+
   function renderStep2() {
     const p = prof();
     if (!p || p.error || p.breastMilkOnly) { $('#step2').innerHTML = '<p>เลือกกลุ่มวัยในขั้นที่ ① ให้ครบก่อน (ทารก 0–5 เดือนไม่มีการจัดจาน)</p>'; return; }
+    $('#step2').innerHTML = `<h2>${Icons.ICON.two}จัดจาน · ${esc(p.label)}</h2>
+      <div class="shop"><div class="shop-main">
+        <input class="search" id="q" placeholder="ค้นวัตถุดิบ เช่น ข้าว ไข่ ปลา นม ผักบุ้ง" autocomplete="off" value="${esc(shop.q)}">
+        <div class="chips">${SHOP_CATS.map(([k, l]) => `<button class="chipbtn${shop.cat === k ? ' on' : ''}" data-shopcat="${k}">${esc(l)}</button>`).join('')}</div>
+        <div id="grid" class="pgrid"></div><div id="more"></div>
+      </div><aside class="shop-side" id="side"></aside></div>`;
+    renderGrid(); renderSide();
+  }
+
+  function renderSide() {
     const mId = state.meal, items = state.meals[mId];
     const calc = items.map(itemCalc);
     const ok = calc.filter(c => !c.error).map(c => ({ food: c.f, amount: c.amount }));
-    const tot = Calc.sumItems(ok, KEYS);
+    const tot = Calc.sumItems(ok, ['energy', 'carb', 'protein', 'fat']);
     const tgt = mealTarget(mId);
-    let h = `<h2>${Icons.ICON.two}จัดจาน · ${esc(p.label)}</h2><div class="tabs noprint">` + D.mealShares.meals.map(m => `<button data-meal="${m.id}" class="${m.id === mId ? 'on' : ''}">${esc(m.label)} (${state.meals[m.id].length})</button>`).join('') + `</div>
-      <div class="two"><div class="noprint"><input class="search" id="q" placeholder="ค้นอาหาร เช่น ข้าว ไข่ ปลา นม ผัก" autocomplete="off"><div class="results" id="res"></div></div><div>
-      <h3>${esc(D.mealShares.meals.find(m => m.id === mId).label)} · เป้า ${tgt ? fmt(tgt, 0) + ' kcal' : '–'} · จานนี้มี ${items.length} อย่าง</h3>
-      <div class="plate-box">${Plate.draw(calc.map((c, i) => ({ idx: i, area: items[i].area || c.f.g, name: c.f.n, grams: c.error ? 100 : c.amount,
-        titleText: esc(c.f.n + (c.error ? '' : ' ' + fmt(c.amount, 0) + ' ' + unitTh(c.f.u)) + (c.s && c.s.energy ? ' · ' + fmt(c.s.energy[0], 0) + ' kcal' : '')) })))}</div>
-      <div class="scroll"><table><tr><th>#</th><th>รายการ</th><th>ช่องบนจาน</th><th>ปริมาณ</th><th class="num">g/ml</th><th class="num">kcal</th><th class="num">C (g)</th><th class="num">P (g)</th><th class="num">ไขมัน (g)</th><th></th></tr>` +
-      calc.map((c, i) => {
-        const it = items[i], f = c.f;
-        const cell = k => c.error ? '' : c.s[k] ? fmt(c.s[k][0], 1) + (c.s[k][1] !== c.s[k][0] ? '–' + fmt(c.s[k][1], 1) : '') : '<span class="na">n.a.</span>';
-        const ar = it.area || f.g;
-        return `<tr><td><span class="num-dot">${i + 1}</span></td><td>${esc(f.n)}<br><small class="na">${esc(f.id)} · ${esc(f.s)}</small></td>
-          <td><select data-i="${i}" data-f="area">${Object.entries(Plate.AREAS).map(([k, a]) => `<option value="${k}"${k === ar ? ' selected' : ''}>${esc(a.label)}</option>`).join('')}</select></td>
-          <td><input data-i="${i}" data-f="value" type="number" step="any" value="${esc(it.value)}"> <select data-i="${i}" data-f="mode"><option value="unit"${it.mode !== 'kcal' ? ' selected' : ''}>${esc(unitTh(f.u))}</option><option value="kcal"${it.mode === 'kcal' ? ' selected' : ''}>kcal</option></select>${c.error ? `<div class="err">${esc(c.error)}</div>` : ''}</td>
-          <td class="num">${c.error ? '' : fmt(c.amount, 1) + ' ' + esc(unitTh(f.u))}</td><td class="num">${cell('energy')}</td><td class="num">${cell('carb')}</td><td class="num">${cell('protein')}</td><td class="num">${cell('fat')}</td>
-          <td><button class="x noprint" data-del="${i}" title="ลบ">×</button></td></tr>`;
-      }).join('') +
-      `<tr><th></th><th>รวมมื้อนี้</th><th></th><th></th><th></th>${['energy', 'carb', 'protein', 'fat'].map(k => `<th class="num">${fmt(tot[k].lo, 1)}${tot[k].missing ? `<br><span class="na">n.a. ${tot[k].missing}</span>` : ''}</th>`).join('')}<th></th></tr></table></div>`;
-    if (tgt && tot.energy.known) {
-      const pct = tot.energy.lo / tgt * 100;
-      h += `<p>พลังงานมื้อนี้ ${fmt(tot.energy.lo, 0)} / ${fmt(tgt, 0)} kcal · <b>${tgt - tot.energy.lo >= 0 ? 'เหลือ ' + fmt(tgt - tot.energy.lo, 0) : 'เกิน ' + fmt(tot.energy.lo - tgt, 0)} kcal</b></p><div class="bar"><i style="width:${Math.min(100, pct)}%"></i></div>`;
+    let h = `<div class="tabs">` + D.mealShares.meals.map(m => `<button data-meal="${m.id}" class="${m.id === mId ? 'on' : ''}">${esc(m.label)} (${state.meals[m.id].length})</button>`).join('') + `</div>
+      <h3 class="side-h">จานของฉัน · ${items.length} อย่าง <span>เป้า ${tgt ? fmt(tgt, 0) + ' kcal' : '–'}</span></h3>
+      <div class="plate-box">${Plate.draw(calc.map((c, i) => ({ idx: i, id: c.f.id, area: items[i].area || c.f.g, name: c.f.n, grams: c.error ? 100 : c.amount,
+        titleText: esc(c.f.n + (c.error ? '' : ' ' + fmt(c.amount, 0) + ' ' + unitTh(c.f.u)) + (c.s && c.s.energy ? ' · ' + fmt(c.s.energy[0], 0) + ' kcal' : '')) })), IMGS)}</div>`;
+    if (tgt) {
+      const e = tot.energy.lo, pct = e / tgt * 100;
+      h += `<div class="kbar"><div class="bar"><i style="width:${Math.min(100, pct)}%"></i></div><p>${fmt(e, 0)} / ${fmt(tgt, 0)} kcal · <b>${tgt - e >= 0 ? 'เหลือ ' + fmt(tgt - e, 0) : 'เกิน ' + fmt(e - tgt, 0)} kcal</b>${tot.energy.missing ? ` <span class="na">(ไม่มีค่าพลังงาน ${tot.energy.missing} รายการ)</span>` : ''}</p></div>`;
     }
-    h += `<p class="note">กรอกปริมาณเป็น g/ml หรือเลือก kcal ได้ · n.a. = ไม่มีข้อมูล ไม่ใช่ 0 · รายการจาก Thai DRI ส่วนใหญ่มีสารอาหารเดียวและไม่มีพลังงาน</p>
-      <p class="noprint"><button class="btn" data-go="3">ดูสรุปทั้งวัน →</button></p></div></div>`;
-    $('#step2').innerHTML = h;
-    renderSearch('');
+    h += `<ul class="cart">` + calc.map((c, i) => {
+      const it = items[i], f = c.f, ar = it.area || f.g;
+      const kc = c.error || !c.s.energy ? '<span class="na">n.a.</span>' : fmt(c.s.energy[0], 0) + ' kcal';
+      return `<li><span class="num-dot">${i + 1}</span><div class="cart-img">${Plate.thumb(f.g, f.n, f.id, IMGS)}</div>
+        <div class="cart-body"><b>${esc(f.n)}</b>
+          <div class="cart-ctl"><input data-i="${i}" data-f="value" type="number" step="any" value="${esc(it.value)}" aria-label="ปริมาณ">
+          <select data-i="${i}" data-f="mode" aria-label="หน่วย"><option value="unit"${it.mode !== 'kcal' ? ' selected' : ''}>${esc(unitTh(f.u))}</option><option value="kcal"${it.mode === 'kcal' ? ' selected' : ''}>kcal</option></select>
+          <span class="cart-k">${c.error ? '' : '= ' + fmt(c.amount, 0) + ' ' + esc(unitTh(f.u)) + ' · '}${kc}</span></div>
+          ${c.error ? `<div class="err">${esc(c.error)}</div>` : ''}
+          <label class="cart-area">ช่องบนจาน <select data-i="${i}" data-f="area">${Object.entries(Plate.AREAS).map(([k, a]) => `<option value="${k}"${k === ar ? ' selected' : ''}>${esc(a.label)}</option>`).join('')}</select></label>
+        </div><button class="x" data-del="${i}" title="เอาออกจากจาน" aria-label="เอาออกจากจาน">×</button></li>`;
+    }).join('') + `</ul>${items.length ? '' : '<p class="na">ยังไม่มีอาหารในจาน</p>'}
+      <p class="note">C ${fmt(tot.carb.lo, 1)} g · P ${fmt(tot.protein.lo, 1)} g · ไขมัน ${fmt(tot.fat.lo, 1)} g · n.a. = ไม่มีข้อมูล ไม่ใช่ 0</p>
+      <p><button class="btn" data-go="3">ดูสรุปทั้งวัน →</button></p>`;
+    $('#side').innerHTML = h;
   }
 
-  function renderSearch(q) {
-    const box = $('#res'); if (!box) return;
-    const n = s => String(s).normalize('NFKC').toLowerCase().replace(/[\s,\-()·]/g, '');
-    const qq = n(q);
-    const list = DB.foods.filter(f => !qq || n(f.n + f.a + f.id).includes(qq))
-      .sort((a, b) => (b.v.energy !== undefined) - (a.v.energy !== undefined) || Object.keys(b.v).length - Object.keys(a.v).length).slice(0, 30);
-    box.innerHTML = list.map(f => `<button class="res" data-add="${esc(f.id)}"><b>${esc(f.n)}</b><small>${esc(f.src)} · ต่อ ${f.b} ${esc(unitTh(f.u))}</small><br><span class="tag">${esc(Plate.AREAS[f.g].label)}</span>
-      ${f.v.energy !== undefined ? `<span class="tag">${fmt(Calc.range(f.v.energy)[0], 0)} kcal</span>` : '<span class="tag w">ไม่มีค่าพลังงาน</span>'}
-      <span class="tag${Object.keys(f.v).length === 1 ? ' w' : ''}">มีข้อมูล ${Object.keys(f.v).length}/${DB.nutrients.length}</span>${f.s.includes('USDA') ? '<span class="tag">ข้อมูลต่างประเทศ</span>' : ''}</button>`).join('') || '<p>ไม่พบอาหาร</p>';
+  function renderGrid() {
+    const grid = $('#grid'); if (!grid) return;
+    const n = x => String(x).normalize('NFKC').toLowerCase().replace(/[\s,\-()·]/g, '');
+    const qq = n(shop.q);
+    const list = DB.foods.filter(f => (shop.cat === 'all' || f.g === shop.cat) && (!qq || n(f.n + f.a + f.id).includes(qq)))
+      .sort((a, b) => (IMGS.has(b.id) - IMGS.has(a.id)) || (b.v.energy !== undefined) - (a.v.energy !== undefined) || Object.keys(b.v).length - Object.keys(a.v).length);
+    const inPlate = new Set(state.meals[state.meal].map(it => it.id));
+    grid.innerHTML = list.slice(0, shop.n).map(f => {
+      const e = f.v.energy !== undefined ? Calc.range(f.v.energy)[0] / f.b * 100 : null;
+      return `<article class="pcard"><div class="pimg">${Plate.thumb(f.g, f.n, f.id, IMGS)}</div>
+        <div class="pbody"><h4>${esc(f.n)}</h4>
+          <p class="pmeta">${e != null ? `<b>${fmt(e, 0)}</b> kcal / 100 ${esc(unitTh(f.u))}` : '<span class="tag w">ไม่มีค่าพลังงาน</span>'}</p>
+          <p class="psrc">${f.s.includes('USDA') ? 'USDA · ข้อมูลต่างประเทศ' : esc(f.s)} · มีข้อมูล ${Object.keys(f.v).length}/${DB.nutrients.length}</p>
+          <button class="btn add${inPlate.has(f.id) ? ' sec' : ''}" data-add="${esc(f.id)}">${inPlate.has(f.id) ? 'ใส่เพิ่มอีก' : 'ใส่จาน'}</button></div></article>`;
+    }).join('') || '<p>ไม่พบวัตถุดิบ</p>';
+    $('#more').innerHTML = list.length > shop.n ? `<button class="btn sec" id="moreBtn">ดูเพิ่ม (${list.length - shop.n} รายการ)</button>` : '';
   }
+
+  function toast(msg) { let t = $('#toast'); if (!t) { t = document.createElement('div'); t.id = 'toast'; document.body.appendChild(t); } t.textContent = msg; t.className = 'show'; clearTimeout(toast.tm); toast.tm = setTimeout(() => t.className = '', 1600); }
 
   /* ---------- step 3 ---------- */
   const PE = { carb: [45, 65], la: [2.5, 9], ala: [0.5, 0.6], satfat: [null, 10] };
@@ -192,9 +212,11 @@
       if (t.dataset.step) go(+t.dataset.step);
       else if (t.dataset.go) go(+t.dataset.go);
       else if (t.dataset.cat) { state.cat = t.dataset.cat; state.band = null; state.groupId = null; if (maternal()) state.sex = 'F'; changed(); }
-      else if (t.dataset.meal) { state.meal = t.dataset.meal; save(); renderStep2(); }
-      else if (t.dataset.add) { state.meals[state.meal].push({ id: t.dataset.add, value: 100, mode: 'unit' }); state.checked = false; save(); const q = $('#q').value; renderStep2(); $('#q').value = q; renderSearch(q); }
-      else if (t.dataset.del) { state.meals[state.meal].splice(+t.dataset.del, 1); save(); renderStep2(); }
+      else if (t.dataset.meal) { state.meal = t.dataset.meal; save(); renderSide(); renderGrid(); }
+      else if (t.dataset.add) { const f = foodsById.get(t.dataset.add); state.meals[state.meal].push({ id: f.id, value: 100, mode: 'unit' }); state.checked = false; save(); renderSide(); renderGrid(); toast('ใส่ ' + f.n + ' ลงจานแล้ว'); }
+      else if (t.dataset.del) { state.meals[state.meal].splice(+t.dataset.del, 1); save(); renderSide(); renderGrid(); }
+      else if (t.dataset.shopcat) { shop.cat = t.dataset.shopcat; shop.n = 24; document.querySelectorAll('.chipbtn').forEach(b => b.classList.toggle('on', b === t)); renderGrid(); }
+      else if (t.id === 'moreBtn') { shop.n += 24; renderGrid(); }
       else if (t.id === 'checkAns') {
         const p = prof(), e1 = Number($('#ansE').value), p1 = Number($('#ansP').value);
         state.answer = { e: $('#ansE').value, p: $('#ansP').value };
@@ -213,7 +235,7 @@
     document.addEventListener('input', e => {
       const t = e.target;
       if (['age', 'weight', 'pal'].includes(t.id)) { state[t.id] = t.value; state.answer = {}; save(); clearTimeout(wire.tm); wire.tm = setTimeout(() => { const id = t.id; renderStep1(); const el = $('#' + id); if (el) el.focus(); }, 600); }
-      else if (t.id === 'q') renderSearch(t.value);
+      else if (t.id === 'q') { shop.q = t.value; shop.n = 24; renderGrid(); }
     });
     document.addEventListener('change', e => {
       const t = e.target;
@@ -223,7 +245,7 @@
       else if (t.id === 'base') { state.base = t.value; changed(); }
       else if (t.id === 'mode') { state.mode = t.value; if (t.value === 'calc' && !state.weight) Object.assign(state, state.cat === 'lact' ? { age: 28, weight: 55 } : { age: 26, weight: 53 }); changed(); }
       else if (t.id === 'activity') { state.activity = t.checked; changed(); }
-      else if (t.dataset.i != null) { state.meals[state.meal][+t.dataset.i][t.dataset.f] = t.value; state.checked = false; save(); const q = $('#q') ? $('#q').value : ''; renderStep2(); if ($('#q')) { $('#q').value = q; renderSearch(q); } }
+      else if (t.dataset.i != null) { state.meals[state.meal][+t.dataset.i][t.dataset.f] = t.value; state.checked = false; save(); renderSide(); }
       else if (t.id === 'practice') rerender();
     });
   }
@@ -231,7 +253,8 @@
   async function init() {
     load();
     try {
-      const [d, g] = await Promise.all([fetch('data/foods.json').then(r => r.json()), fetch('data/groups.json').then(r => r.json())]);
+      const [d, g, im] = await Promise.all([fetch('data/foods.json').then(r => r.json()), fetch('data/groups.json').then(r => r.json()), fetch('data/images.json').then(r => r.ok ? r.json() : []).catch(() => [])]);
+      IMGS = new Set(im);
       DB = d; D = g; DB.nutrients.forEach(n => NUT[n.key] = n); foodsById = new Map(DB.foods.map(f => [f.id, f]));
       KEYS = DB.nutrients.map(n => n.key);
       for (const m of Object.keys(state.meals)) state.meals[m] = state.meals[m].filter(it => foodsById.has(it.id));

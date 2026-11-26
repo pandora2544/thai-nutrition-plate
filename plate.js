@@ -49,54 +49,77 @@
     }
   }
 
-  /* Slots: on-plate areas use rings of positions; side dishes stack. */
-  const W = 620, H = 410, CX = 222, CY = 212, R = 172;
-  function slots(area, count) {
-    const out = [];
-    if (area === 'veg') { const base = [[-100, -45], [-50, 40], [-60, -105], [-110, 60], [-50, -30], [-120, -5], [-75, 110], [-30, 100], [-30, -90]]; for (let i = 0; i < count; i++) out.push(base[i % base.length]); }
-    else if (area === 'starch') { const base = [[70, -75], [130, -40], [115, -118], [45, -128], [40, -30]]; for (let i = 0; i < count; i++) out.push(base[i % base.length]); }
-    else if (area === 'protein') { const base = [[60, 55], [130, 40], [115, 112], [48, 125], [95, 175]]; for (let i = 0; i < count; i++) out.push(base[i % base.length]); }
-    return out.map(([x, y]) => [CX + x, CY + y]);
+  /* 3D-style plate: the plate is a flat circle seen at an angle (y squashed by K); food stands upright with a contact shadow. */
+  const W = 640, H = 430, CX = 250, CY = 230, R = 190, K = 0.56;
+  const SLOTS = {
+    veg: [[-110, -40], [-60, 60], [-70, -110], [-125, 60], [-45, -25], [-140, -5], [-90, 125], [-35, 120], [-30, -100]],
+    starch: [[75, -80], [135, -40], [120, -125], [45, -135], [45, -30]],
+    protein: [[65, 60], [135, 40], [120, 120], [50, 130], [100, 175]]
+  };
+  const SIDE = { milk: [545, 140], fruit: [545, 285], fat: [455, 395], other: [575, 400] };
+  const ell = (cx, cy, rx, ry, extra) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" ${extra}/>`;
+  function sector(a0, a1, fill) { // angles in degrees, flat-circle then squashed
+    const p = a => [CX + R * Math.cos(a * Math.PI / 180), CY + R * K * Math.sin(a * Math.PI / 180)];
+    const [x0, y0] = p(a0), [x1, y1] = p(a1);
+    return `<path d="M${CX} ${CY} L${x0.toFixed(1)} ${y0.toFixed(1)} A${R} ${R * K} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(1)} ${y1.toFixed(1)}Z" fill="${fill}"/>`;
   }
-  const SIDE = { milk: [500, 92], fruit: [500, 250], fat: [455, 372], other: [560, 372] };
-
-  function draw(items) {
+  function art(area, name, id, imgs, size) {
+    if (imgs && imgs.has(id)) return `<image href="img/${id}.webp" x="${-size / 2}" y="${-size * 0.85}" width="${size}" height="${size}"/>`;
+    const sc = size / 44;
+    return `<g transform="translate(0 ${-size * 0.38}) scale(${sc.toFixed(2)})">${piece(area, name)}</g>`;
+  }
+  function draw(items, imgs) {
     const by = {}; items.forEach(it => (by[it.area] = by[it.area] || []).push(it));
-    let s = `<svg viewBox="0 0 ${W} ${H + 25}" class="plate-svg" role="img" aria-label="จานอาหาร ${items.length} รายการ">
-      <defs><radialGradient id="pl" cx="45%" cy="40%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eef1ef"/></radialGradient>
-      <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#1f3a30" flood-opacity=".16"/></filter></defs>
-      <rect x="6" y="14" width="${W - 12}" height="${H}" rx="22" fill="#f3efe6"/>
-      <circle cx="${CX}" cy="${CY}" r="${R + 14}" fill="url(#pl)" stroke="#d5dcd8" stroke-width="1.5" filter="url(#sh)"/>
-      <circle cx="${CX}" cy="${CY}" r="${R}" fill="#fff" stroke="#e3e8e5"/>
-      <path d="M${CX} ${CY - R} A${R} ${R} 0 0 0 ${CX} ${CY + R}z" fill="${AREAS.veg.color}"/>
-      <path d="M${CX} ${CY - R} A${R} ${R} 0 0 1 ${CX + R} ${CY}H${CX}z" fill="${AREAS.starch.color}"/>
-      <path d="M${CX + R} ${CY} A${R} ${R} 0 0 1 ${CX} ${CY + R}V${CY}z" fill="${AREAS.protein.color}"/>
-      <path d="M${CX} ${CY - R} V${CY + R} M${CX} ${CY} H${CX + R}" stroke="#d5dcd8" stroke-width="2" stroke-dasharray="5 5"/>
-      <text x="${CX - 70}" y="${CY + R - 10}" class="pl-lab" text-anchor="middle">ผัก</text>
-      <text x="${CX + 66}" y="${CY - R + 30}" class="pl-lab" text-anchor="middle">ข้าว-แป้ง</text>
-      <text x="${CX + 66}" y="${CY + R - 12}" class="pl-lab" text-anchor="middle">เนื้อสัตว์ ไข่ ถั่ว</text>
-      <g filter="url(#sh)"><circle cx="${SIDE.fruit[0]}" cy="${SIDE.fruit[1]}" r="62" fill="#fff" stroke="#d5dcd8" stroke-width="1.5"/></g><text x="${SIDE.fruit[0] + 80}" y="${SIDE.fruit[1] + 4}" class="pl-lab" text-anchor="middle">ผลไม้</text>
-      <g filter="url(#sh)"><path d="M${SIDE.milk[0] - 32} ${SIDE.milk[1] - 58} h64 l-8 112 h-48z" fill="#f4f9fb" stroke="#cfdbe1" stroke-width="1.5"/></g><text x="${SIDE.milk[0] + 70}" y="${SIDE.milk[1] + 4}" class="pl-lab" text-anchor="middle">นม</text>
-      <g filter="url(#sh)"><ellipse cx="${SIDE.fat[0]}" cy="${SIDE.fat[1]}" rx="44" ry="26" fill="#fff" stroke="#d5dcd8" stroke-width="1.5"/><ellipse cx="${SIDE.other[0]}" cy="${SIDE.other[1]}" rx="44" ry="26" fill="#fff" stroke="#d5dcd8" stroke-width="1.5"/></g>
-      <text x="${SIDE.fat[0]}" y="${SIDE.fat[1] + 44}" class="pl-lab" text-anchor="middle">ไขมัน</text><text x="${SIDE.other[0]}" y="${SIDE.other[1] + 44}" class="pl-lab" text-anchor="middle">เครื่องปรุง</text>`;
+    let s = `<svg viewBox="0 0 ${W} ${H + 30}" class="plate-svg" role="img" aria-label="จานอาหาร ${items.length} รายการ">
+      <defs><linearGradient id="tbl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#efe7da"/><stop offset="1" stop-color="#e3d8c6"/></linearGradient>
+      <radialGradient id="rim" cx="40%" cy="30%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e6ebe8"/></radialGradient>
+      <filter id="blur"><feGaussianBlur stdDeviation="6"/></filter></defs>
+      <rect x="4" y="10" width="${W - 8}" height="${H + 14}" rx="24" fill="url(#tbl)"/>
+      ${ell(CX + 8, CY + 26, R + 26, (R + 26) * K, 'fill="#5b4a33" opacity=".22" filter="url(#blur)"')}
+      ${ell(CX, CY + 12, R + 22, (R + 22) * K, 'fill="#d9dfdc"')}
+      ${ell(CX, CY, R + 22, (R + 22) * K, 'fill="url(#rim)" stroke="#cfd7d3" stroke-width="1.2"')}
+      ${ell(CX, CY + 4, R, R * K, 'fill="#e9eeeb"')}
+      ${ell(CX, CY, R, R * K, 'fill="#fff"')}
+      ${sector(90, 270, AREAS.veg.color)}${sector(270, 360, AREAS.starch.color)}${sector(0, 90, AREAS.protein.color)}
+      <path d="M${CX} ${CY - R * K} V${CY + R * K} M${CX} ${CY} H${CX + R}" stroke="#d5dcd8" stroke-width="2" stroke-dasharray="6 6"/>
+      <text x="${CX - 95}" y="${CY + R * K + 46}" class="pl-lab" text-anchor="middle">ผัก</text>
+      <text x="${CX + 95}" y="${CY - R * K - 24}" class="pl-lab" text-anchor="middle">ข้าว-แป้ง</text>
+      <text x="${CX + 95}" y="${CY + R * K + 46}" class="pl-lab" text-anchor="middle">เนื้อสัตว์ ไข่ ถั่ว</text>
+      ${ell(SIDE.milk[0] + 4, SIDE.milk[1] + 16, 52, 16, 'fill="#5b4a33" opacity=".2" filter="url(#blur)"')}${ell(SIDE.milk[0], SIDE.milk[1] + 6, 50, 20, 'fill="#c9b89c"')}${ell(SIDE.milk[0], SIDE.milk[1], 50, 20, 'fill="#e6d8bf" stroke="#c9b89c" stroke-width="1.2"')}
+      <text x="${SIDE.milk[0]}" y="${SIDE.milk[1] + 46}" class="pl-lab" text-anchor="middle">นม</text>
+      ${ell(SIDE.fruit[0] + 6, SIDE.fruit[1] + 30, 72, 26, 'fill="#5b4a33" opacity=".2" filter="url(#blur)"')}
+      ${ell(SIDE.fruit[0], SIDE.fruit[1] + 12, 70, 34, 'fill="#dfe5e2"')}${ell(SIDE.fruit[0], SIDE.fruit[1], 70, 34, 'fill="#fff" stroke="#cfd7d3" stroke-width="1.2"')}
+      <text x="${SIDE.fruit[0]}" y="${SIDE.fruit[1] + 66}" class="pl-lab" text-anchor="middle">ผลไม้</text>
+      ${['fat', 'other'].map(a => ell(SIDE[a][0] + 4, SIDE[a][1] + 14, 46, 15, 'fill="#5b4a33" opacity=".2" filter="url(#blur)"') + ell(SIDE[a][0], SIDE[a][1] + 6, 44, 18, 'fill="#dfe5e2"') + ell(SIDE[a][0], SIDE[a][1], 44, 18, 'fill="#fff" stroke="#cfd7d3" stroke-width="1.2"')).join('')}
+      <text x="${SIDE.fat[0]}" y="${SIDE.fat[1] + 40}" class="pl-lab" text-anchor="middle">ไขมัน</text><text x="${SIDE.other[0]}" y="${SIDE.other[1] + 40}" class="pl-lab" text-anchor="middle">เครื่องปรุง</text>`;
+    const placed = [];
     for (const area of Object.keys(by)) {
-      const list = by[area];
-      let pos;
-      if (area === 'veg' || area === 'starch' || area === 'protein') pos = slots(area, list.length);
-      else if (area === 'milk') pos = list.map((_, i) => [SIDE.milk[0] + (list.length > 1 ? (i % 2 ? 13 : -13) : 0), SIDE.milk[1] + 10 - Math.floor(i / 2) * 30]);
-      else if (area === 'fruit') pos = list.map((_, i) => [SIDE.fruit[0] + [0, -26, 26, -14, 18][i % 5], SIDE.fruit[1] + [0, -22, -20, 26, 26][i % 5]]);
-      else if (area === 'fat') pos = list.map((_, i) => [SIDE.fat[0] + (list.length > 1 ? (i % 3 - 1) * 20 : 0), SIDE.fat[1]]);
-      else pos = list.map((_, i) => [SIDE.other[0] + (list.length > 1 ? (i % 3 - 1) * 20 : 0), SIDE.other[1]]);
+      const list = by[area], many = list.length > 4 ? 0.8 : 1;
       list.forEach((it, i) => {
-        const onPlate = area === 'veg' || area === 'starch' || area === 'protein';
-        const sc = Math.max(0.8, Math.min(1.6, Math.sqrt((it.grams || 100) / 100))) * (onPlate ? 1.55 : area === 'fruit' ? 1.2 : area === 'milk' ? 1.3 : 0.9) * (list.length > 4 ? 0.8 : 1);
-        const [x, y] = pos[i];
-        s += `<g class="piece" data-idx="${it.idx}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><title>${it.titleText}</title><g transform="scale(${sc.toFixed(2)})">${piece(area, it.name)}</g>
-          <circle cx="${(14 * sc).toFixed(1)}" cy="${(-14 * sc).toFixed(1)}" r="9" fill="#0f6b55" stroke="#fff" stroke-width="2"/><text x="${(14 * sc).toFixed(1)}" y="${(-14 * sc + 3.6).toFixed(1)}" class="pl-num" text-anchor="middle">${it.idx + 1}</text></g>`;
+        let x, y, base;
+        if (SLOTS[area]) { const [dx, dy] = SLOTS[area][i % SLOTS[area].length]; x = CX + dx; y = CY + dy * K; base = 62; }
+        else if (area === 'milk') { x = SIDE.milk[0] + (list.length > 1 ? (i % 3 - 1) * 26 : 0); y = SIDE.milk[1] + 4; base = 64; }
+        else if (area === 'fruit') { x = SIDE.fruit[0] + [0, -32, 32, -14, 20][i % 5]; y = SIDE.fruit[1] + [4, -6, -4, 14, 16][i % 5]; base = 58; }
+        else { const c = SIDE[area] || SIDE.other; x = c[0] + (list.length > 1 ? (i % 3 - 1) * 22 : 0); y = c[1] + 2; base = 40; }
+        const size = base * Math.max(0.75, Math.min(1.5, Math.sqrt((it.grams || 100) / 100))) * many;
+        placed.push({ it, area, x, y, size });
       });
     }
-    if (!items.length) s += `<text x="${CX}" y="${CY + 5}" class="pl-empty" text-anchor="middle">จานยังว่าง · ค้นอาหารแล้วกดเพื่อวางบนจาน</text>`;
+    placed.sort((a, b) => a.y - b.y);
+    for (const p of placed) {
+      s += `<g class="piece" data-idx="${p.it.idx}" transform="translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})"><title>${p.it.titleText}</title>
+        ${ell(0, 0, (p.size * 0.42).toFixed(1), (p.size * 0.13).toFixed(1), 'fill="#3b2f20" opacity=".22"')}
+        ${art(p.area, p.it.name, p.it.id, imgs, p.size)}
+        <circle cx="${(p.size * 0.38).toFixed(1)}" cy="${(-p.size * 0.82).toFixed(1)}" r="10" fill="#0f6b55" stroke="#fff" stroke-width="2"/>
+        <text x="${(p.size * 0.38).toFixed(1)}" y="${(-p.size * 0.82 + 3.8).toFixed(1)}" class="pl-num" text-anchor="middle">${p.it.idx + 1}</text></g>`;
+    }
+    if (!items.length) s += `<text x="${CX}" y="${CY + 6}" class="pl-empty" text-anchor="middle">จานยังว่าง · กด "ใส่จาน" ที่วัตถุดิบ</text>`;
     return s + '</svg>';
   }
-  root.Plate = { draw, AREAS };
+  /* Product image for the shop grid: Gemini image if present, else the vector drawing. */
+  function thumb(area, name, id, imgs) {
+    if (imgs && imgs.has(id)) return `<img src="img/${id}.webp" alt="" loading="lazy" width="256" height="256">`;
+    return `<svg viewBox="-30 -30 60 60" aria-hidden="true"><g transform="scale(1.05)">${piece(area, name)}</g></svg>`;
+  }
+  root.Plate = { draw, thumb, AREAS };
 })(this);
