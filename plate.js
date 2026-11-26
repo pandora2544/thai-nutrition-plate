@@ -64,7 +64,7 @@
     return `<path d="M${CX} ${CY} L${x0.toFixed(1)} ${y0.toFixed(1)} A${R} ${R * K} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(1)} ${y1.toFixed(1)}Z" fill="${fill}"/>`;
   }
   function art(area, name, id, imgs, size) {
-    if (imgs && imgs.has(id)) return `<image href="img/${id}.webp" x="${-size / 2}" y="${-size * 0.85}" width="${size}" height="${size}"/>`;
+    if (imgs && imgs.has(id)) { const s = size * 1.4; return `<image href="img/${id}.webp" x="${(-s / 2).toFixed(1)}" y="${(-s * 0.78).toFixed(1)}" width="${s.toFixed(1)}" height="${s.toFixed(1)}"/>`; }
     const sc = size / 44;
     return `<g transform="translate(0 ${-size * 0.38}) scale(${sc.toFixed(2)})">${piece(area, name)}</g>`;
   }
